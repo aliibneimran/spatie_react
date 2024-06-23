@@ -1,0 +1,31 @@
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+
+#topmodal{
+    margin-top: 60px;
+}
+.deznav .metismenu > li > a i{
+    padding-right: 10px;
+}
+#modalMenu .text-center{
+    background-color: white;
+    padding: 10px;
+    border-radius: 10%;
+    /* border: 1px solid black; */
+}
+#modalMenu a i{
+    margin-bottom: 15%;
+    font-size: 25px;
+}
+#offcanvasRight{
+    margin-top: 6%;
+}
+.carousel-caption{
+    /* background-image: linear-gradient(rgb(54, 11, 11), rgb(7, 7, 2)); */
+    background-color: black;
+    opacity: 0.6;
+    color: white;
+    text-align: justify;
+    padding: 10px;
+}
