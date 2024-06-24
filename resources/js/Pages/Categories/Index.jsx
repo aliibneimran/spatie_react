@@ -6,11 +6,11 @@ export default function Index() {
     const { categories, flash = {} } = usePage().props;
 
     const categoryItems = categories.data || [];
-    const { delete: deletecategory } = useForm();
+    const { delete: deletedata } = useForm();
 
     const handleDelete = (id) => {
         if (window.confirm("Do you want to Delete?")) {
-            deletecategory(route("category.destroy", { category: id }));
+            deletedata(route("category.destroy", { category: id }));
         }
     };
     return (

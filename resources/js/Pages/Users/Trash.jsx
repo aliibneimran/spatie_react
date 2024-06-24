@@ -2,21 +2,29 @@ import Layout from "@/Layouts/Layout";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
-export default function Index() {
-    const { users, flash = {} } = usePage().props;
+export default function Trash() {
+    const { user, flash = {} } = usePage().props; // permissions is now a paginator object
+    // Extracting the items array from the paginator
+    const userItems = user.data || [];
 
-    const usersItems = users.data || [];
-    const { delete: deletedata } = useForm();
+    // Using useForm to handle API requests
+    const { delete: deletedata ,patch: restoredata} = useForm();
 
     const handleDelete = (id) => {
-        if (window.confirm("Do you want to Delete?")) {
-            deletedata(route("users.destroy", { user: id }));
+        if (window.confirm('Do you want to delete this permission permanently?')) {
+            deletedata(route('users.delete', { id: id }));
         }
     };
+    const handleRestore = (id) => {
+        if (window.confirm('Do you want to restore this permission?')) {
+            restoredata(route('users.restore', { id: id }));
+        }
+    };
+
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">All users</h1>
+                <h1 className="p-4 text-center h1">User Trash List</h1>
                 {/* Display Success Message */}
                 {flash.success && (
                     <div className="alert alert-success">{flash.success}</div>
@@ -29,10 +37,10 @@ export default function Index() {
                         Add New
                     </Link>
                     <Link
-                        href={route("users.trash")}
+                        href={route("users.index")}
                         className="btn btn-info"
                     >
-                        Trash List
+                        Index
                     </Link>
                 </div>
                 <div className="table-responsive">
@@ -46,45 +54,31 @@ export default function Index() {
                             </tr>
                         </thead>
                         <tbody>
-                            {usersItems.length > 0 ? (
-                                usersItems.map((data, index) => (
+                            {userItems.length > 0 ? (
+                                userItems.map((data, index) => (
                                     <tr key={data.id}>
                                         <td>{index + 1}</td>
                                         <td>{data.name}</td>
                                         <td>{data.type}</td>
                                         <td>
-                                            {/* <Link
-                                                href={route(
-                                                    "users.show",
-                                                    { users: data.id }
-                                                )}
-                                                className="btn btn-primary"
-                                            >
-                                                <i className="fa-solid fa-eye"></i>
-                                            </Link> */}
-                                            <Link
-                                                href={route(
-                                                    "users.edit",
-                                                    { user: data.id }
-                                                )}
-                                                className="btn btn-info mx-1"
-                                            >
-                                                <i className="fa-solid fa-pen-to-square"></i>
-                                            </Link>
                                             <button
-                                                onClick={() =>
-                                                    handleDelete(data.id)
-                                                }
-                                                className="btn btn-danger"
+                                                className="btn btn-info mx-1"
+                                                onClick={() => handleRestore(data.id)}
                                             >
-                                                <i className="fa-solid fa-trash"></i>
+                                                Restore
+                                            </button>
+                                            <button
+                                                className="btn btn-danger"
+                                                onClick={() => handleDelete(data.id)}
+                                            >
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="3">No users found.</td>
+                                    <td colSpan="3">No user found.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -92,7 +86,7 @@ export default function Index() {
                 </div>
                 {/* Pagination Links */}
                 <div className="pagination justify-content-center mb-4">
-                    {users.links.map((link, index) => (
+                    {user.links.map((link, index) => (
                         <Link
                             key={index}
                             href={link.url}

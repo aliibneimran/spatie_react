@@ -42,11 +42,21 @@ Route::patch('category/{id}/restore', [CategoryController::class, 'restore'])->n
 Route::delete('category/{id}/delete', [CategoryController::class, 'delete'])->name('category.delete');
 
 Route::resource('roles', RoleController::class);
+    Route::get('/roletrash',[RoleController::class, 'trash'])->name('roles.trash');
+    Route::patch('role/{id}/restore', [RoleController::class, 'restore'])->name('roles.restore');
+    Route::delete('role/{id}/delete', [RoleController::class, 'delete'])->name('roles.delete');
+
 Route::resource('users', UserController::class);
+    Route::get('/usertrash',[UserController::class, 'usertrash'])->name('users.trash');
+    Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{id}/delete', [UserController::class, 'delete'])->name('users.delete');
+    Route::put('/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('/mark-as-read', [UserController::class, 'markAsRead'])->name('mark-as-read');
+
 Route::resource('permissions', PermissionController::class);
-Route::get('/pertrash',[PermissionController::class, 'pertrash'])->name('permissions.trash');
-Route::patch('permissions/{id}/restore', [PermissionController::class, 'restore'])->name('permissions.restore');
-Route::delete('permissions/{id}/delete', [PermissionController::class, 'delete'])->name('permissions.delete');
+    Route::get('/pertrash',[PermissionController::class, 'pertrash'])->name('permissions.trash');
+    Route::patch('permissions/{id}/restore', [PermissionController::class, 'restore'])->name('permissions.restore');
+    Route::delete('permissions/{id}/delete', [PermissionController::class, 'delete'])->name('permissions.delete');
 
 // Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 

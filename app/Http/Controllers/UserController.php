@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -26,7 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::paginate(10);
         return Inertia::render('Users/Index',compact('users'));
     }
 
@@ -109,6 +110,51 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('users.index')
+            ->with('success', 'User deleted successfully');
+    }
+    public function usertrash()
+    {
+        $user = User::onlyTrashed()->latest()->paginate(10);
+        return Inertia::render('Users/Trash', compact('user'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->restore();
+        return redirect()->route('users.index')->with('success', 'Data Restored Successfully');
+    }
+
+    public function delete($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->forceDelete();
+
+        // $dataDelete = "User Deleted.";
+        // User::find(Auth::user()->id)->notify(new NewNotification($dataDelete));
+
+        return redirect()->route('users.trash')->with('success', 'Data Deleted Successfully');
+    }
+
+    // Active, deactive
+
+    public function changeStatus(Request $request, $id)
+    {
+
+        $input['status'] = $request->status ? $request->status : 0;
+        $user = User::find($id);
+        $user->update($input);
+        return redirect()->route('users.index')
+            ->with('success', 'Update Successfully');
+    }
+
+    // notification
+
+    public function markAsRead()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
     }
 }

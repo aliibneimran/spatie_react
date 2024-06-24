@@ -1,7 +1,7 @@
 // resources/js/Pages/Roles/Edit.jsx
 
 import Layout from '@/Layouts/Layout';
-import { usePage, useForm } from '@inertiajs/react';
+import { usePage, useForm, Link } from '@inertiajs/react';
 import React, { useEffect } from 'react';
 
 export default function Edit() {
@@ -64,7 +64,8 @@ export default function Edit() {
                                 ))}
                             </div>
                         </div>
-                        <div className="m-3">
+                        <div className="m-3 text-center">
+                        <Link href={route('roles.index')} className="btn btn-danger mx-2">Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
                                 Submit
                             </button>

@@ -6,11 +6,11 @@ export default function Index() {
     const { permissions, flash = {} } = usePage().props;
 
     const permissionItems = permissions.data || [];
-    const { delete: deletePermission } = useForm();
+    const { delete: deletedata } = useForm();
 
     const handleDelete = (id) => {
         if (window.confirm("Do you want to Delete?")) {
-            deletePermission(route("permissions.destroy", { permission: id }));
+            deletedata(route("permissions.destroy", { permission: id }));
         }
     };
     return (

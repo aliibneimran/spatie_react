@@ -6,6 +6,7 @@ import User from "./User";
 
 export default function Sidebar() {
     const { user } = usePage().props;
+
     return (
         <div className='leftside-menu'>
             {/* Logo Light */}

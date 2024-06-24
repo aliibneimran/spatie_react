@@ -4,7 +4,6 @@ import React from "react";
 export default function SuperAdmin() {
     return (
         <ul className="side-nav">
-            <li className="side-nav-title">Main</li>
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="ri-calendar-line" />

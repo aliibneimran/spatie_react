@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { useForm, usePage } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import React from "react";
 
 export default function Edit() {
@@ -116,7 +116,8 @@ export default function Edit() {
                                 </div>
                             </div>
                         </div>
-                        <div className="m-3">
+                        <div className="m-3 text-center">
+                        <Link href={route('users.index')} className='btn btn-danger mx-2'>Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
                                 {processing ? 'Updating...' : 'Update'}
                             </button>

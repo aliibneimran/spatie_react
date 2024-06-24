@@ -1,7 +1,7 @@
 // resources/js/Pages/Roles/Create.jsx
 
 import Layout from '@/Layouts/Layout';
-import { usePage, useForm } from '@inertiajs/react';
+import { usePage, useForm, Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function Create() {
@@ -55,7 +55,7 @@ export default function Create() {
                                         />
                                         <label
                                             htmlFor={`permission-${permission.id}`}
-                                            className="form-check-label mx-2"
+                                            className="form-check-label mx-1"
                                         >
                                             {permission.name}
                                         </label>
@@ -64,6 +64,7 @@ export default function Create() {
                             </div>
                         </div>
                         <div className="m-3 text-center">
+                        <Link href={route('roles.index')} className="btn btn-danger mx-2">Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
                                 Submit
                             </button>

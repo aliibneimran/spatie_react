@@ -22,7 +22,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::get();
+        $roles = Role::paginate(10);
         return Inertia::render('Roles/Index',compact('roles'));
     }
 
@@ -103,6 +103,31 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Role::find($id)->delete();
+        return redirect()->route('roles.index')
+            ->with('success', 'role deleted successfully');
+    }
+    public function trash()
+    {
+        $role = Role::onlyTrashed()->latest()->paginate(10);
+        return Inertia::render('Roles/Trash', compact('role'));
+    }
+
+    public function restore($id)
+    {
+        $role = Role::onlyTrashed()->find($id);
+        $role->restore();
+        return redirect()->route('roles.index')->with('success', 'Data Restored Successfully');
+    }
+
+    public function delete($id)
+    {
+        $role = Role::onlyTrashed()->find($id);
+        $role->forceDelete();
+
+        // $dataDelete = "role Deleted.";
+        // role::find(Auth::role()->id)->notify(new NewNotification($dataDelete));
+
+        return redirect()->route('roles.trash')->with('success', 'Data Deleted Successfully');
     }
 }
