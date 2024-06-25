@@ -50,8 +50,8 @@ export default function Create() {
                             />
                             {errors.image && <div className="text-danger">{errors.image}</div>}
                         </div>
-                        <div className='m-3'>
-                        <Link href={route('category.index')} className='btn btn-danger'>Back</Link>
+                        <div className='m-3 text-center'>
+                        <Link href={route('category.index')} className='btn btn-danger mx-2'>Back</Link>
                             <button type='submit' className='btn btn-success' disabled={processing}>
                                 {processing ? 'Submitting...' : 'Submit'}
                             </button>

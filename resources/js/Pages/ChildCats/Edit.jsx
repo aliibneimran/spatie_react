@@ -1,0 +1,88 @@
+import Layout from "@/Layouts/Layout";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import React, { useEffect } from "react";
+
+export default function Edit() {
+    const { childcat, subcats } = usePage().props;
+
+    // Initialize the form state with useForm hook
+    const { data, setData, put, processing, errors } = useForm({
+        subcat_id: childcat.subcat_id || '',
+        child_cat_name: childcat.child_cat_name || '',
+        image: null,
+    });
+
+    // Populate form data when childcat changes
+    useEffect(() => {
+        setData('subcat_id', childcat.subcat_id || '');
+        setData('child_cat_name', childcat.child_cat_name || '');
+    }, [childcat]);
+
+    // Handle form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        put(route('childcat.update', childcat.id));
+    };
+
+    // Handle file input change
+    const handleFileChange = (e) => {
+        setData('image', e.target.files[0]);
+    };
+
+    return (
+        <Layout>
+            <div className="row">
+                <h1 className="p-4 text-center h1">Edit Child Category</h1>
+                <div className="col-md-8 m-auto">
+                    <form onSubmit={handleSubmit}>
+                        <div className="m-3">
+                            <select
+                                name="subcat_id"
+                                className="form-control"
+                                value={data.subcat_id}
+                                onChange={(e) => setData('subcat_id', e.target.value)}
+                            >
+                                <option value="">Select Subcategory</option>
+                                {subcats.map(subcat => (
+                                    <option key={subcat.id} value={subcat.id}>{subcat.sub_cat_name}</option>
+                                ))}
+                            </select>
+                            {errors.subcat_id && <div className="text-danger">{errors.subcat_id}</div>}
+                        </div>
+                        <div className="m-3">
+                            <input
+                                type="text"
+                                name="child_cat_name"
+                                placeholder="Name"
+                                className="form-control"
+                                value={data.child_cat_name}
+                                onChange={(e) => setData('child_cat_name', e.target.value)}
+                            />
+                            {errors.child_cat_name && <div className="text-danger">{errors.child_cat_name}</div>}
+                        </div>
+                        <div className="m-3">
+                            <input
+                                type="file"
+                                name="image"
+                                className="form-control"
+                                onChange={handleFileChange}
+                            />
+                            {errors.image && <div className="text-danger">{errors.image}</div>}
+                        </div>
+                        <div className="m-3 text-center">
+                            <Link
+                                href={route("childcat.index")}
+                                className="btn btn-danger mx-2"
+                            >
+                                Back
+                            </Link>
+                            <button type="submit" className="btn btn-success" disabled={processing}>
+                                {processing ? 'Updating...' : 'Update'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </Layout>
+    );
+}

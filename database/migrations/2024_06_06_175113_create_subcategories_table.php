@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_child_categories', function (Blueprint $table) {
+        Schema::create('subcategories', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('childcat_id');
-            $table->string('sub_child_cat_name');
-            // $table->foreign('childcat_id')->references('id')->on('childcats')->onDelete('cascade');
+            $table->unsignedBigInteger('cat_id');
+            $table->string('sub_cat_name');
             $table->string('image')->nullable();
             $table->smallInteger('status')->default(1);
+            $table->foreign('cat_id')->references('id')->on('categories')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_child_categories');
+        Schema::dropIfExists('subcategories');
     }
 };

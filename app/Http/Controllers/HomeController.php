@@ -18,14 +18,11 @@ class HomeController extends Controller
         // dd($user);
         $permission = Permission::get();
 
-        if ($user->type === 1) {
+        if ($user->type === 0) {
             return Inertia::render('Dashboard',compact('user','permission'));
         }
-        if ($user->type === 2) {
+        if ($user->type === 1) {
             return Inertia::render('Admin',compact('user','permission'));
-        }
-        if ($user->type === 3) {
-            return Inertia::render('User',compact('user','permission'));
         }
 
     }

@@ -32,7 +32,7 @@ export default function Trash() {
                 <div className="mb-4 text-center">
                     <Link
                         href={route("permissions.create")}
-                        className="btn btn-primary"
+                        className="btn btn-primary mx-2"
                     >
                         Add New
                     </Link>

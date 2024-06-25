@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 export default function Edit() {
     const { permission, errors } = usePage().props;
     const { data, setData, put, processing } = useForm({
-        name: permission.name || '', 
+        name: permission.name || '',
     });
 
     useEffect(() => {
@@ -47,7 +47,6 @@ export default function Edit() {
                                 value={data.name}
                                 onChange={handleChange}
                                 className="form-control"
-                                placeholder="Name"
                             />
                             {errors.name && <span className="text-danger">{errors.name}</span>}
                         </div>

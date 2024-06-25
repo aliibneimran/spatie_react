@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Package extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $guarded  = [''];
 
     public function user(){
-        return $this->hasMany(User::class,'pkg_id');
+        return $this->hasMany(User::class);
     }
 }

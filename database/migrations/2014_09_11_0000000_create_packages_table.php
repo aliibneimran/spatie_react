@@ -24,6 +24,7 @@ return new class extends Migration
             $table->smallInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

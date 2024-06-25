@@ -35,33 +35,25 @@ export default function SuperAdmin() {
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href={route("category.create")}
+                                href={route('subcategory.index')}
                             >
-                                Add Categories
+                                All Sub Categories
                             </Link>
                         </li>
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href="apps-invoice.html"
+                                href={route('childcat.index')}
                             >
-                                Add Sub Categories
+                                All Child Categories
                             </Link>
                         </li>
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href="apps-invoice.html"
+                                href={route('subchildcat.index')}
                             >
-                                Add Child Categories
-                            </Link>
-                        </li>
-                        <li className="side-nav-item">
-                            <Link
-                                className="side-nav-link"
-                                href="apps-invoice.html"
-                            >
-                                Add Sub Child Categories
+                                All Sub Child Categories
                             </Link>
                         </li>
                     </ul>
@@ -183,7 +175,7 @@ export default function SuperAdmin() {
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href={route("permissions.index")}
+                                href={route("package.index")}
                             >
                                 All Packages
                             </Link>
@@ -191,7 +183,7 @@ export default function SuperAdmin() {
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href={route("permissions.create")}
+                                href={route("package.create")}
                             >
                                 Add Package
                             </Link>

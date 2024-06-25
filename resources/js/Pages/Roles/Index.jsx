@@ -24,7 +24,7 @@ export default function Index() {
                 <div className="mb-4 text-center">
                     <Link
                         href={route("roles.create")}
-                        className="btn btn-primary"
+                        className="btn btn-primary mx-2"
                     >
                         Add New
                     </Link>
@@ -51,7 +51,7 @@ export default function Index() {
                                         <td>{index + 1}</td>
                                         <td>{data.name}</td>
                                         <td>
-                                            {/* <Link
+                                            <Link
                                                 href={route(
                                                     "roles.show",
                                                     { role: data.id }
@@ -59,7 +59,7 @@ export default function Index() {
                                                 className="btn btn-primary"
                                             >
                                                 <i className="fa-solid fa-eye"></i>
-                                            </Link> */}
+                                            </Link>
                                             <Link
                                                 href={route(
                                                     "roles.edit",

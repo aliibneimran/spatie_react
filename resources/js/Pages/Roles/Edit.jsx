@@ -45,7 +45,7 @@ export default function Edit() {
                         <div className="m-3">
                             <div className="row">
                                 {permissions.map((permission) => (
-                                    <div key={permission.id} className="form-group p-1 col-2">
+                                    <div key={permission.id} className="col-md-4">
                                         <input
                                             type="checkbox"
                                             id={`permission-${permission.id}`}

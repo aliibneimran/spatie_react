@@ -21,19 +21,15 @@ export default function Edit() {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = name === 'image' ? e.target.files[0] : e.target.value;
-        setData(name, value);
+        setData((data) => ({
+            ...data,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('cat_name', data.cat_name);
-        if (data.image) {
-            formData.append('image', data.image);
-        }
-        put(route('category.update', { id: category.id }), formData, {
-            forceFormData: true,
-        });
+        put(route('category.update', { id: category.id }))
     };
 
     return (
@@ -41,7 +37,7 @@ export default function Edit() {
             <div className="row">
                 <div className="col">
                     <h1 className="p-4 text-center h1">Edit Category</h1>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div className="m-3">
                             <input
                                 type="text"
@@ -65,8 +61,8 @@ export default function Edit() {
                                 <div className="text-danger">{errors.image}</div>
                             )}
                         </div>
-                        <div className="m-3">
-                            <Link href={route('category.index')} className='btn btn-danger'>Back</Link>
+                        <div className="m-3 text-center">
+                            <Link href={route('category.index')} className='btn btn-danger mx-2'>Back</Link>
                             <button
                                 type="submit"
                                 className="btn btn-success"

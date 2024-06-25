@@ -98,7 +98,7 @@ export default function Create() {
                             </div>
                         </div>
                         <div className="m-3 text-center">
-                        <Link href={route('users.index')} className='btn btn-danger'>Back</Link>
+                        <Link href={route('users.index')} className='btn btn-danger mx-2'>Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
                                 Submit
                             </button>
