@@ -54,7 +54,7 @@ export default function Index() {
                                         <td>
                                             {data.image && (
                                                 <img
-                                                    src={data.image}
+                                                    src={`/images/cat/${data.image}`}
                                                     alt={data.cat_name}
                                                     style={{
                                                         maxWidth: "50px",

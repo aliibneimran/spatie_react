@@ -38,6 +38,7 @@ Route::get('/', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+Route::get('/global', [HomeController::class, 'PassData'])->name('global');
 
 
 Route::resource('category', CategoryController::class);
@@ -68,8 +69,8 @@ Route::resource('roles', RoleController::class);
 
 Route::resource('users', UserController::class);
     Route::get('/usertrash',[UserController::class, 'usertrash'])->name('users.trash');
-    Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-    Route::delete('users/{id}/delete', [UserController::class, 'delete'])->name('users.delete');
+    Route::patch('user/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('user/{id}/delete', [UserController::class, 'delete'])->name('users.delete');
     Route::put('/changeStatus/{id}', [UserController::class, 'changeStatus'])->name('changeStatus');
     Route::get('/mark-as-read', [UserController::class, 'markAsRead'])->name('mark-as-read');
 

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
+use App\Models\Package;
 use App\Models\User;
+use App\Notifications\NewNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -37,7 +41,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return Inertia::render('Users/Create',compact('roles'));
+        $packages = Package::all();
+        return Inertia::render('Users/Create',compact('roles','packages'));
     }
 
     /**
@@ -52,16 +57,49 @@ class UserController extends Controller
             'role' => 'required|integer',
         ]);
 
-        $user = User::create([
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+        $input['type'] = $request->type ?? 2;
+        $input['client_id'] = auth()->user()->id;
+        $input['child_client_id'] = $input['client_id'] . rand(11, 999);
+        $input['package_id'] = $request->package_id ?? NULL;
+        $input['business_name'] = $request->business_name ?? NULL;
+        $input['client_address'] = $request->client_address ?? NULL;
+        $input['client_mobile'] = $request->client_mobile ?? NULL;
+        $registration_date = $request->registration_date;
+        $input['registration_date'] = $registration_date ?? NULL;
+        $expire_date = $request->expire_date;
+        $input['expire_date'] = $expire_date ?? NULL;
+
+        // dd($input);
+
+        $user = User::create($input);
+        $user->assignRole($request->input('roles'));
+
+        // send mail
+        $urlLink = $request->root();
+        $user = [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'type' => $request->role, // Assuming you have a role_id field in your users table
-        ]);
+            'password' => $request->password,
+            'link' => $urlLink,
+        ];
+        $email = $request->email;
+        Mail::to($email)->send(new WelcomeMail($user));
+
+        // Notification
+        $datas = $request->email;
+        User::find(Auth::user()->id)->notify(new NewNotification($datas));
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
+        // return Inertia::render('Users/Create',compact('roles','packages'));
     }
+    // public function Notification()
+    // {
+    //     $notifications = DB::select('select * from notifications');
+    //     return Inertia::render('Components/Notification',compact('notifications'));
 
+    // }
     /**
      * Display the specified resource.
      */

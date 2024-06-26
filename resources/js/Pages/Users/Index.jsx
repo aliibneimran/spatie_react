@@ -4,7 +4,6 @@ import React from "react";
 
 export default function Index() {
     const { users, flash = {} } = usePage().props;
-
     const usersItems = users.data || [];
     const { delete: deletedata } = useForm();
 

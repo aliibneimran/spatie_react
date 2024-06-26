@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 
@@ -24,6 +25,18 @@ class HomeController extends Controller
         if ($user->type === 1) {
             return Inertia::render('Admin',compact('user','permission'));
         }
+
+    }
+    public function PassData()
+    {
+        // $user = auth()->user();
+        // $notifications = DB::select('select * from notifications');
+        // return Inertia::render('Constant/Global',compact('user','notifications'));
+        Inertia::share('user', auth()->user());
+        Inertia::share('notifications', DB::select('select * from notifications'));
+
+        // Render your Inertia view
+        return Inertia::render('Constant/Global');
 
     }
 
