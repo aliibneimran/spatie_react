@@ -15,28 +15,17 @@ class HomeController extends Controller
     }
     public function index()
     {
-        $user = auth()->user();
+        $data['user'] = auth()->user();
         // dd($user);
-        $permission = Permission::get();
+        $data['permissions'] = Permission::all();
+        $data['notifications'] = DB::select('select * from notifications');
 
-        if ($user->type === 0) {
-            return Inertia::render('Dashboard',compact('user','permission'));
+        if ($data['user']->type === 0) {
+            return Inertia::render('Dashboard',$data);
         }
-        if ($user->type === 1) {
-            return Inertia::render('Admin',compact('user','permission'));
+        if ($data['user']->type === 1) {
+            return Inertia::render('Admin',$data);
         }
-
-    }
-    public function PassData()
-    {
-        // $user = auth()->user();
-        // $notifications = DB::select('select * from notifications');
-        // return Inertia::render('Constant/Global',compact('user','notifications'));
-        Inertia::share('user', auth()->user());
-        Inertia::share('notifications', DB::select('select * from notifications'));
-
-        // Render your Inertia view
-        return Inertia::render('Constant/Global');
 
     }
 

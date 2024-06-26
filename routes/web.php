@@ -38,7 +38,6 @@ Route::get('/', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::get('/global', [HomeController::class, 'PassData'])->name('global');
 
 
 Route::resource('category', CategoryController::class);

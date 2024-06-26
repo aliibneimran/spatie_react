@@ -1,12 +1,11 @@
 import Layout from "@/Layouts/Layout";
 import { usePage } from "@inertiajs/react";
-import Global from "../Pages/Constant/Global";
 
 export default function Dashboard() {
-    const { user } = usePage().props;
-    // console.log(notifications)
+    const { user,notifications,permissions } = usePage().props;
+    // console.log(permissions)
     return (
-        <Layout>
+        <Layout user={user} permissions={permissions} notifications={notifications}>
            <div className="row">
                 <h1>{user.name} Dashboard</h1>
                 {/* <Global/> */}

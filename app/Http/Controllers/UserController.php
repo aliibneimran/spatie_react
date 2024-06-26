@@ -94,12 +94,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User created successfully.');
         // return Inertia::render('Users/Create',compact('roles','packages'));
     }
-    // public function Notification()
-    // {
-    //     $notifications = DB::select('select * from notifications');
-    //     return Inertia::render('Components/Notification',compact('notifications'));
-
-    // }
+    
     /**
      * Display the specified resource.
      */

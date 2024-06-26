@@ -1,14 +1,14 @@
 import Header from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
 import { Link, usePage } from "@inertiajs/react";
-import React, { useEffect } from "react";
 
 export default function Layout({ children}) {
+  const { user,notifications,permissions } = usePage().props;
     return (
        <div>
   <div className="wrapper">
-    <Header></Header>
-    <Sidebar></Sidebar>
+    <Header user={user} permissions={permissions} notifications={notifications}></Header>
+    <Sidebar user={user} permissions={permissions} notifications={notifications}></Sidebar>
 
     <div className="content-page">
       <div className="content">

@@ -1,9 +1,8 @@
-import { Link } from "@inertiajs/react";
-import React from "react";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function Notification({ notifications,user }) {
-    console.log(notifications);
-    console.log(user);
+export default function Notification() {
+    const { user,notifications,permissions } = usePage().props;
+    console.log("ok",notifications)
     return (
         <li className="dropdown notification-list">
             <Link
@@ -22,7 +21,7 @@ export default function Notification({ notifications,user }) {
                     <div className="row align-items-center">
                         <div className="col">
                             <h6 className="m-0 fs-16 fw-semibold">
-                            {/* {user.name} */}
+                            {user.name}
                             </h6>
                         </div>
                         <div className="col-auto">

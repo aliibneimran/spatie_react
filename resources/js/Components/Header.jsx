@@ -1,10 +1,11 @@
 import { Link, usePage } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import OfCanvas from "./OfCanvas";
 import Notification from "./Notification";
 export default function Header() {
-    const {user} = usePage().props
+    const { user,notifications,permissions } = usePage().props;
+    
     const [showModal, setShowModal] = useState(false);
 
 
@@ -181,7 +182,7 @@ export default function Header() {
                             </a>
                         </div>
                     </li>
-                  <Notification></Notification>
+                  <Notification user notifications permissions></Notification>
                     <li className="d-none d-sm-inline-block">
                         <a
                             className="nav-link"
