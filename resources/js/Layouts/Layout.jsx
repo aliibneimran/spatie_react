@@ -3,12 +3,12 @@ import Sidebar from "@/Components/Sidebar";
 import { Link, usePage } from "@inertiajs/react";
 
 export default function Layout({ children}) {
-  const { user,notifications,permissions } = usePage().props;
+  const { user,notifications,haspermissions,unreadNotifications,readNotifications} = usePage().props;
     return (
        <div>
   <div className="wrapper">
-    <Header user={user} permissions={permissions} notifications={notifications}></Header>
-    <Sidebar user={user} permissions={permissions} notifications={notifications}></Sidebar>
+    <Header user={user} haspermissions={haspermissions} notifications={notifications} unreadNotifications={unreadNotifications} readNotifications={readNotifications}></Header>
+    <Sidebar user={user} haspermissions={haspermissions} notifications={notifications}></Sidebar>
 
     <div className="content-page">
       <div className="content">

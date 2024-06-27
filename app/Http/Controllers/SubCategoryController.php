@@ -24,8 +24,9 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $subcats = Subcategory::with('category')->paginate(10);
-        return Inertia::render('SubCats/Index',compact('subcats'));
+        return Inertia::render('SubCats/Index',compact('subcats','user'));
     }
 
     /**

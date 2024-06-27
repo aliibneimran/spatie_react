@@ -4,8 +4,8 @@ import Modal from "./Modal";
 import OfCanvas from "./OfCanvas";
 import Notification from "./Notification";
 export default function Header() {
-    const { user,notifications,permissions } = usePage().props;
-    
+    const { user,notifications,permissions,unreadNotifications,readNotifications } = usePage().props;
+
     const [showModal, setShowModal] = useState(false);
 
 
@@ -182,7 +182,7 @@ export default function Header() {
                             </a>
                         </div>
                     </li>
-                  <Notification user notifications permissions></Notification>
+                  <Notification user notifications permissions unreadNotifications={unreadNotifications} readNotifications={readNotifications}></Notification>
                     <li className="d-none d-sm-inline-block">
                         <a
                             className="nav-link"

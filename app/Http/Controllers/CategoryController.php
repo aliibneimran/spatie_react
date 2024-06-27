@@ -21,8 +21,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
-        return Inertia::render('Categories/Index', compact('categories'));
+        $data['user'] = auth()->user();
+        $data['categories'] = Category::paginate(10);
+        return Inertia::render('Categories/Index', $data);
     }
 
     /**
@@ -30,7 +31,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Categories/Create');
+        $data['user'] = auth()->user();
+        return Inertia::render('Categories/Create',$data);
     }
 
     /**
@@ -72,7 +74,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return Inertia::render('Categories/Edit', compact('category'));
+        $data['user'] = auth()->user();
+        $data['category'] = Category::findOrFail($category);
+        return Inertia::render('Categories/Edit', $data);
     }
 
     /**
@@ -165,8 +169,9 @@ class CategoryController extends Controller
 
     public function trash()
     {
-        $category = Category::onlyTrashed()->latest()->paginate(10);
-        return Inertia::render('Categories/Trash', compact('category'));
+        $data['user'] = auth()->user();
+        $data['category'] = Category::onlyTrashed()->latest()->paginate(10);
+        return Inertia::render('Categories/Trash', $data);
     }
 
     public function restore($id)

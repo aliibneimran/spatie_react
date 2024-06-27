@@ -20,8 +20,9 @@ class PackageController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $packages = Package::paginate(10);
-        return Inertia::render('Packages/Index', compact('packages'));
+        return Inertia::render('Packages/Index', compact('packages','user'));
     }
 
     /**
@@ -29,7 +30,8 @@ class PackageController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Packages/Create');
+        $user = auth()->user();
+        return Inertia::render('Packages/Create',compact('user'));
     }
 
     /**

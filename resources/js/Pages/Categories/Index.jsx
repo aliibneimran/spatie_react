@@ -3,7 +3,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
-    const { categories, flash = {} } = usePage().props;
+    const {user, categories, flash = {} } = usePage().props;
 
     const categoryItems = categories.data || [];
     const { delete: deletedata } = useForm();

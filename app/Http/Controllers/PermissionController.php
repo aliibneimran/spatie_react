@@ -21,9 +21,11 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $permissions = Permission::paginate(10); // Change 10 to the number of items per page you want
         return Inertia::render('Permissions/Index', [
             'permissions' => $permissions,
+            'user' => $user,
             'flash' => session()->get('flash') ?? []
         ]);
     }
@@ -33,8 +35,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
         $roles = Role::get();
-        return Inertia::render('Permissions/Create',compact('roles'));
+        return Inertia::render('Permissions/Create',compact('roles','user'));
     }
 
     /**

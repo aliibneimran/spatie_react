@@ -3,21 +3,16 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 
 export default function Edit() {
-    const {user, roles, userRole, packages} = usePage().props;
+    const { user, roles } = usePage().props;
 
     const { data, setData, put, processing, errors } = useForm({
-        name: "",
-        email: "",
+        name: user.name || "",
+        email: user.email || "",
         password: "",
         password_confirmation: "",
-        role: "",
-        business_name: "",
-        client_mobile: "",
-        package: "",
-        registration_date: "",
-        expire_date: "",
-        client_address: "",
+        role:  "",
     });
+
     useEffect(() => {
         setData({
             name: user.name || "",
@@ -27,6 +22,7 @@ export default function Edit() {
             role:  "",
         });
     }, [user]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData(name, value);
@@ -43,10 +39,11 @@ export default function Edit() {
             },
         });
     };
+
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">Add User</h1>
+                <h1 className="p-4 text-center h1">Edit User</h1>
                 <div>
                     <form onSubmit={handleSubmit}>
                         <div className="row">
@@ -99,9 +96,7 @@ export default function Edit() {
                                 )}
                             </div>
                             <div className="mb-3 col-md-6">
-                                <label className="form-label">
-                                    Confirm Password
-                                </label>
+                                <label className="form-label">Confirm Password</label>
                                 <input
                                     type="password"
                                     name="password_confirmation"
@@ -116,39 +111,8 @@ export default function Edit() {
                                     </div>
                                 )}
                             </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Business Name</label>
-                                <input
-                                    type="text"
-                                    name="business_name"
-                                    className="form-control"
-                                    placeholder="Business Name"
-                                    value={data.business_name}
-                                    onChange={handleChange}
-                                />
-                                {errors.business_name && (
-                                    <div className="text-danger">
-                                        {errors.business_name}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Mobile</label>
-                                <input
-                                    type="text"
-                                    name="client_mobile"
-                                    className="form-control"
-                                    placeholder="Mobile"
-                                    value={data.client_mobile}
-                                    onChange={handleChange}
-                                />
-                                {errors.client_mobile && (
-                                    <div className="text-danger">
-                                        {errors.client_mobile}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-6">
+
+                            <div className="mb-3 col-md-4 m-auto">
                                 <label className="form-label">User Role</label>
                                 <select
                                     name="role"
@@ -169,71 +133,7 @@ export default function Edit() {
                                     </div>
                                 )}
                             </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Package</label>
-                                <select
-                                    name="package"
-                                    className="form-control"
-                                    value={data.package}
-                                    onChange={handleChange}
-                                >
-                                    <option value="">Select Package</option>
-                                    {packages.map((pkg) => (
-                                        <option key={pkg.id} value={pkg.id}>
-                                            {pkg.package_name}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.package && (
-                                    <div className="text-danger">
-                                        {errors.package}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Registration Date</label>
-                                <input
-                                    type="date"
-                                    name="registration_date"
-                                    className="form-control"
-                                    value={data.registration_date}
-                                    onChange={handleChange}
-                                />
-                                {errors.registration_date && (
-                                    <div className="text-danger">
-                                        {errors.registration_date}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Expire Date</label>
-                                <input
-                                    type="date"
-                                    name="expire_date"
-                                    className="form-control"
-                                    value={data.expire_date}
-                                    onChange={handleChange}
-                                />
-                                {errors.expire_date && (
-                                    <div className="text-danger">
-                                        {errors.expire_date}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-12">
-                                <label className="form-label">Address</label>
-                                <textarea
-                                    name="client_address"
-                                    className="form-control"
-                                    value={data.client_address}
-                                    onChange={handleChange}
-                                />
-                                {errors.client_address && (
-                                    <div className="text-danger">
-                                        {errors.client_address}
-                                    </div>
-                                )}
-                            </div>
+
                         </div>
                         <div className="m-3 text-center">
                             <Link

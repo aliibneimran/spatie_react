@@ -3,7 +3,7 @@ import React from "react";
 
 export default function SuperAdmin() {
     const { user,notifications,permissions } = usePage().props;
-    console.log(user)
+    // console.log(user)
     return (
         <ul className="side-nav">
             <li className="side-nav-item">

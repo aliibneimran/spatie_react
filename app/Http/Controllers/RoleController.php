@@ -22,8 +22,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
         $roles = Role::paginate(10);
-        return Inertia::render('Roles/Index',compact('roles'));
+        $permissions = Permission::all();
+        return Inertia::render('Roles/Index',compact('roles','user','permissions'));
     }
 
     /**
@@ -31,8 +33,9 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
         $permissions = Permission::get();
-        return Inertia::render('Roles/Create',compact('permissions'));
+        return Inertia::render('Roles/Create',compact('permissions','user'));
     }
 
     /**
@@ -58,11 +61,12 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
+        $user = auth()->user();
         $role = Role::findOrFail($id);
         $permissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
         ->where("role_has_permissions.role_id",$id)
         ->get();
-        return Inertia::render('Roles/Show',compact('role','permissions'));
+        return Inertia::render('Roles/Show',compact('role','permissions','user'));
     }
 
     /**
@@ -70,10 +74,12 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
+        $user = auth()->user();
         $role = Role::with('permissions')->findOrFail($id);
         $permissions = Permission::all();
         return Inertia::render('Roles/Edit', [
             'role' => $role,
+            'user' => $user,
             'permissions' => $permissions,
         ]);
     }

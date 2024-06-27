@@ -3,10 +3,10 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
-    const { users, flash = {} } = usePage().props;
+    const { users, flash = {} ,permissions} = usePage().props;
     const usersItems = users.data || [];
     const { delete: deletedata } = useForm();
-
+// console.log(permissions)
     const handleDelete = (id) => {
         if (window.confirm("Do you want to Delete?")) {
             deletedata(route("users.destroy", { user: id }));

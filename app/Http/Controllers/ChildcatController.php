@@ -22,8 +22,9 @@ class ChildcatController extends Controller
      */
     public function index()
     {
-        $childcats = Childcat::with('subcategory')->paginate(10);
-        return Inertia::render('ChildCats/Index',compact('childcats'));
+        $data['user'] = auth()->user();
+        $data['childcats'] = Childcat::with('subcategory')->paginate(10);
+        return Inertia::render('ChildCats/Index',$data);
     }
 
     /**

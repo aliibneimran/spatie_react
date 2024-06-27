@@ -3,14 +3,15 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Create() {
-    const { roles, packages } = usePage().props;
-
+    const { user ,roles, packages } = usePage().props;
+    const type = user.type;
     const { data, setData, post, processing, errors } = useForm({
+        type: user.type || "",
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
-        role: "",
+        roles: user.roles || "",
         business_name: "",
         client_mobile: "",
         package: "",
@@ -102,49 +103,21 @@ export default function Create() {
                                     </div>
                                 )}
                             </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Business Name</label>
-                                <input
-                                    type="text"
-                                    name="business_name"
-                                    className="form-control"
-                                    placeholder="Business Name"
-                                    value={data.business_name}
-                                    onChange={handleChange}
-                                />
-                                {errors.business_name && (
-                                    <div className="text-danger">
-                                        {errors.business_name}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3 col-md-6">
-                                <label className="form-label">Mobile</label>
-                                <input
-                                    type="text"
-                                    name="client_mobile"
-                                    className="form-control"
-                                    placeholder="Mobile"
-                                    value={data.client_mobile}
-                                    onChange={handleChange}
-                                />
-                                {errors.client_mobile && (
-                                    <div className="text-danger">
-                                        {errors.client_mobile}
-                                    </div>
-                                )}
-                            </div>
+
+                            {type === 0 && (
+                            <>
+
                             <div className="mb-3 col-md-6">
                                 <label className="form-label">User Role</label>
                                 <select
-                                    name="role"
+                                    name="roles[]"
                                     className="form-control"
-                                    value={data.role}
+                                    // value={data.roles}
                                     onChange={handleChange}
                                 >
                                     <option value="">Select Role</option>
                                     {roles.map((role) => (
-                                        <option key={role.id} value={role.id}>
+                                        <option key={role.id} value={role.name}>
                                             {role.name}
                                         </option>
                                     ))}
@@ -176,6 +149,41 @@ export default function Create() {
                                     </div>
                                 )}
                             </div>
+
+                            <div className="mb-3 col-md-6">
+                                <label className="form-label">Business Name</label>
+                                <input
+                                    type="text"
+                                    name="business_name"
+                                    className="form-control"
+                                    placeholder="Business Name"
+                                    value={data.business_name}
+                                    onChange={handleChange}
+                                />
+                                {errors.business_name && (
+                                    <div className="text-danger">
+                                        {errors.business_name}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="mb-3 col-md-6">
+                                <label className="form-label">Mobile</label>
+                                <input
+                                    type="text"
+                                    name="client_mobile"
+                                    className="form-control"
+                                    placeholder="Mobile"
+                                    value={data.client_mobile}
+                                    onChange={handleChange}
+                                />
+                                {errors.client_mobile && (
+                                    <div className="text-danger">
+                                        {errors.client_mobile}
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="mb-3 col-md-6">
                                 <label className="form-label">Registration Date</label>
                                 <input
@@ -220,6 +228,20 @@ export default function Create() {
                                     </div>
                                 )}
                             </div>
+                            <input
+                                        type="hidden"
+                                        name="type"
+                                        value="1"
+                                        onChange={handleChange}
+                                    />
+                            </>
+                            )}
+                            {type === 1 && (
+                                <>
+                                 <input type="hidden" name="roles"  value="Employee" onChange={handleChange}/>
+                                 <input type="hidden" name="type" value="2" onChange={handleChange}/>
+                                </>
+                            )}
                         </div>
                         <div className="m-3 text-center">
                             <Link

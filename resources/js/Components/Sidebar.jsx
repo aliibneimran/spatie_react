@@ -5,8 +5,8 @@ import { Link, usePage } from "@inertiajs/react";
 import User from "./User";
 
 export default function Sidebar() {
-    const { user,notifications,permissions } = usePage().props;
-    // console.log(user)
+    const { user,notifications,haspermissions } = usePage().props;
+    // console.log("usertype",user.type)
     return (
         <div className='leftside-menu'>
             {/* Logo Light */}
@@ -30,9 +30,9 @@ export default function Sidebar() {
             {/* Sidebar */}
             <div data-simplebar>
             {/* <SuperAdmin/> */}
-                {user.type === 0 && <SuperAdmin user={user} permissions={permissions} notifications={notifications}/>}
-                {user.type === 1 && <Admin />}
-                {user.type === 3 && <User />}
+                {user.type === 0 && <SuperAdmin user={user} haspermissions={haspermissions} notifications={notifications}/>}
+                {user.type === 1 && <Admin user={user} haspermissions={haspermissions} notifications={notifications}/>}
+                {user.type === 2 && <User />}
 
             </div>
         </div>

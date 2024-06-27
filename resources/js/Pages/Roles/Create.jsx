@@ -5,7 +5,7 @@ import { usePage, useForm, Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function Create() {
-    const { permissions } = usePage().props;
+    const { user, permissions } = usePage().props;
 
     const { data, setData, post, processing, errors } = useForm({
         name: '',
