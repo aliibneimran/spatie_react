@@ -5,6 +5,7 @@ use App\Http\Controllers\ChildcatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubcategoryController;
@@ -38,7 +39,12 @@ Route::get('/', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+// profile manage
+Route::get('/profile-manage', [HomeController::class, 'profileUpdateShow'])->name('profile.edit');
+Route::post('/profile-manage', [HomeController::class, 'profileUpdate'])->name('profileupdate');
 
+Route::get('change-password', [HomeController::class, 'passwordChangeindex'] )->name('change.password');
+Route::post('change-password', [HomeController::class, 'passwordChangeStore'])->name('change.passwordupdate');
 
 Route::resource('category', CategoryController::class);
     Route::get('/trash',[CategoryController::class, 'trash'])->name('category.trash');
@@ -85,11 +91,7 @@ Route::resource('package', PackageController::class);
     Route::patch('package/{id}/restore', [PackageController::class, 'restore'])->name('package.restore');
     Route::delete('package/{id}/delete', [PackageController::class, 'delete'])->name('package.delete');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
 
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {
     Route::get('/admin', function () {

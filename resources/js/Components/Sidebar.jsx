@@ -12,19 +12,19 @@ export default function Sidebar() {
             {/* Logo Light */}
             <Link href="index.html" className="logo logo-light">
                 <span className="logo-lg">
-                    <img src="assets/images/logo.png" alt="logo" />
+                    <img src="/assets/images/logo.png" alt="logo" />
                 </span>
                 <span className="logo-sm">
-                    <img src="assets/images/logo.png" alt="small logo" />
+                    <img src="/assets/images/logo.png" alt="small logo" />
                 </span>
             </Link>
             {/* Logo Dark */}
             <Link href="index.html" className="logo logo-dark">
                 <span className="logo-lg">
-                    <img src="assets/images/logo.png" alt="dark logo" />
+                    <img src="/assets/images/logo.png" alt="dark logo" />
                 </span>
                 <span className="logo-sm">
-                    <img src="assets/images/logo.png" alt="small logo" />
+                    <img src="/assets/images/logo.png" alt="small logo" />
                 </span>
             </Link>
             {/* Sidebar */}

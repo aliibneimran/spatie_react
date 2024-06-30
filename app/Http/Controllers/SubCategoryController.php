@@ -24,9 +24,9 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $subcats = Subcategory::with('category')->paginate(10);
-        return Inertia::render('SubCats/Index',compact('subcats','user'));
+        $data['user'] = auth()->user();
+        $data['subcats'] = Subcategory::with('category')->paginate(10);
+        return Inertia::render('SubCats/Index',$data);
     }
 
     /**
@@ -34,8 +34,9 @@ class SubcategoryController extends Controller
      */
     public function create()
     {
-        $cats = Category::get();
-        return Inertia::render('SubCats/Create',compact('cats'));
+        $data['user'] = auth()->user();
+        $data['cats'] = Category::get();
+        return Inertia::render('SubCats/Create', $data);
     }
 
     /**
@@ -81,8 +82,10 @@ class SubcategoryController extends Controller
      */
     public function edit(Subcategory $subcategory)
     {
-        $cats = Category::get();
-        return Inertia::render('SubCats/Edit',compact('subcategory','cats'));
+        $data['user'] = auth()->user();
+        $data['cats'] = Category::get();
+        $data['subcategory'] = $subcategory;
+        return Inertia::render('SubCats/Edit',$data);
     }
 
     /**
@@ -123,13 +126,14 @@ class SubcategoryController extends Controller
     {
         $subcategory->delete();
         return redirect()->route('subcategory.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Trashted successfully');
     }
 
     public function subtrash()
     {
-        $subcats = Subcategory::with('category')->latest()->onlyTrashed()->paginate(15);
-        return Inertia::render('SubCats/Trash',compact('subcats'));
+        $data['user'] = auth()->user();
+        $data['subcats'] = Subcategory::with('category')->latest()->onlyTrashed()->paginate(15);
+        return Inertia::render('SubCats/Trash', $data);
     }
 
     public function restore($id)

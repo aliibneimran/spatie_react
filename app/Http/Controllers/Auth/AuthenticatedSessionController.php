@@ -31,6 +31,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+        // Check if the authenticated user's status is 0
+        // if (Auth::user()->status == 0) {
+        //     Auth::guard('web')->logout();
+        //     return redirect()->route('login')->withErrors([
+        //         'status' => 'Your account is inactive.',
+        //     ]);
+        // }
+        if (auth()->user()->status == 0) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/')->with('success', 'Your account is inactive. Please contact support.');
+        }
 
         $request->session()->regenerate();
 

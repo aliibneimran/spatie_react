@@ -21,13 +21,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $permissions = Permission::paginate(10); // Change 10 to the number of items per page you want
-        return Inertia::render('Permissions/Index', [
-            'permissions' => $permissions,
-            'user' => $user,
-            'flash' => session()->get('flash') ?? []
-        ]);
+        $data['user'] = auth()->user();
+        $data['permissions'] = Permission::paginate(10); // Change 10 to the number of items per page you want
+        return Inertia::render('Permissions/Index', $data);
     }
 
     /**
@@ -35,9 +31,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $roles = Role::get();
-        return Inertia::render('Permissions/Create',compact('roles','user'));
+        $data['user'] = auth()->user();
+        $data['roles'] = Role::get();
+        return Inertia::render('Permissions/Create',$data);
     }
 
     /**
@@ -58,8 +54,7 @@ class PermissionController extends Controller
 
         Permission::create($data);
 
-        return redirect()->route('permissions.index')
-            ->with('success', 'Created successfully.');
+        return redirect()->route('permissions.index')->with('success', 'Created successfully.');
     }
 
     /**
@@ -75,8 +70,9 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-        $permission = Permission::find($id);
-        return Inertia::render('Permissions/Edit',compact('permission'));
+        $data['user'] = auth()->user();
+        $data['permission'] = Permission::find($id);
+        return Inertia::render('Permissions/Edit',$data);
     }
 
     /**
@@ -91,7 +87,7 @@ class PermissionController extends Controller
         $permission = Permission::findOrFail($id);
         $permission->update($request->all());
 
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully');
+        return redirect()->route('permissions.index')->with('success', 'Data updated successfully');
     }
 
     /**
@@ -101,14 +97,13 @@ class PermissionController extends Controller
     {
         $permission->delete();
         return redirect()->route('permissions.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Trashted successfully');
     }
     public function pertrash()
     {
-        // $permissions = Permission::latest()->onlyTrashed()->paginate(15);
-        $permissions = Permission::onlyTrashed()->latest()->paginate(15);
-        // dd($permissions);
-        return Inertia::render('Permissions/Trash', compact('permissions'));
+        $data['user'] = auth()->user();
+        $data['permissions'] = Permission::latest()->onlyTrashed()->paginate(10);
+        return Inertia::render('Permissions/Trash', $data);
     }
 
     public function restore($id)

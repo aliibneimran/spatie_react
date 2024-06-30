@@ -3,7 +3,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
-    const {user, categories, flash = {} } = usePage().props;
+    const { user, categories, flash } = usePage().props;
 
     const categoryItems = categories.data || [];
     const { delete: deletedata } = useForm();
@@ -16,7 +16,7 @@ export default function Index() {
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">All categories</h1>
+                <h1 className="p-4 text-center h1">All Categories</h1>
                 {/* Display Success Message */}
                 {flash.success && (
                     <div className="alert alert-success">{flash.success}</div>
@@ -74,10 +74,9 @@ export default function Index() {
                                                 <i className="fa-solid fa-eye"></i>
                                             </Link> */}
                                             <Link
-                                                href={route(
-                                                    "category.edit",
-                                                    { category: data.id }
-                                                )}
+                                                href={route("category.edit", {
+                                                    category: data.id,
+                                                })}
                                                 className="btn btn-info mx-1"
                                             >
                                                 <i className="fa-solid fa-pen-to-square"></i>

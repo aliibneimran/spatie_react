@@ -22,10 +22,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $roles = Role::paginate(10);
-        $permissions = Permission::all();
-        return Inertia::render('Roles/Index',compact('roles','user','permissions'));
+        $data['user'] = auth()->user();
+        $data['roles'] = Role::paginate(10);
+        $data['permissions'] = Permission::all();
+        return Inertia::render('Roles/Index',$data);
     }
 
     /**
@@ -33,9 +33,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $permissions = Permission::get();
-        return Inertia::render('Roles/Create',compact('permissions','user'));
+        $data['user'] = auth()->user();
+        $data['permissions'] = Permission::get();
+        return Inertia::render('Roles/Create',$data);
     }
 
     /**
@@ -53,7 +53,7 @@ class RoleController extends Controller
         $permissions = Permission::whereIn('name', $request->permissions)->get();
         $role->permissions()->sync($permissions);
 
-        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
+        return redirect()->route('roles.index')->with('success', 'Created successfully.');
     }
 
     /**
@@ -74,14 +74,10 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $user = auth()->user();
-        $role = Role::with('permissions')->findOrFail($id);
-        $permissions = Permission::all();
-        return Inertia::render('Roles/Edit', [
-            'role' => $role,
-            'user' => $user,
-            'permissions' => $permissions,
-        ]);
+        $data['user'] = auth()->user();
+        $data['role'] = Role::with('permissions')->findOrFail($id);
+        $data['permissions'] = Permission::all();
+        return Inertia::render('Roles/Edit', $data);
     }
 
     /**
@@ -101,7 +97,7 @@ class RoleController extends Controller
         $permissions = Permission::whereIn('name', $request->permissions)->get();
         $role->permissions()->sync($permissions);
 
-        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
+        return redirect()->route('roles.index')->with('success', 'Data updated successfully.');
     }
 
     /**
@@ -111,12 +107,13 @@ class RoleController extends Controller
     {
         Role::find($id)->delete();
         return redirect()->route('roles.index')
-            ->with('success', 'role deleted successfully');
+            ->with('success', 'Data Trashted successfully');
     }
     public function trash()
     {
-        $role = Role::onlyTrashed()->latest()->paginate(10);
-        return Inertia::render('Roles/Trash', compact('role'));
+        $data['user'] = auth()->user();
+        $data['role'] = Role::latest()->onlyTrashed()->paginate(10);
+        return Inertia::render('Roles/Trash', $data);
     }
 
     public function restore($id)

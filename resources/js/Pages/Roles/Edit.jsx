@@ -45,7 +45,7 @@ export default function Edit() {
                         <div className="m-3">
                             <div className="row">
                                 {permissions.map((permission) => (
-                                    <div key={permission.id} className="col-md-4">
+                                    <div key={permission.id} className="col-md-3">
                                         <input
                                             type="checkbox"
                                             id={`permission-${permission.id}`}
@@ -67,7 +67,7 @@ export default function Edit() {
                         <div className="m-3 text-center">
                         <Link href={route('roles.index')} className="btn btn-danger mx-2">Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
-                                Submit
+                            {processing ? 'Updating...' : 'Update'}
                             </button>
                         </div>
                     </form>

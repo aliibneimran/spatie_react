@@ -66,7 +66,7 @@ export default function Create() {
                         <div className="m-3 text-center">
                         <Link href={route('roles.index')} className="btn btn-danger mx-2">Back</Link>
                             <button type="submit" className="btn btn-success" disabled={processing}>
-                                Submit
+                            {processing ? 'Submitting...' : 'Submit'}
                             </button>
                         </div>
                     </form>

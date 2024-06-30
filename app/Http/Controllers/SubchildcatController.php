@@ -22,9 +22,9 @@ class SubchildcatController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $subchildcats = Subchildcat::with('childcategory')->paginate(10);
-        return Inertia::render('SubChildCats/Index',compact('subchildcats','user'));
+        $data['user'] = auth()->user();
+        $data['subchildcats'] = Subchildcat::with('childcategory')->paginate(10);
+        return Inertia::render('SubChildCats/Index',$data);
     }
 
     /**
@@ -32,8 +32,9 @@ class SubchildcatController extends Controller
      */
     public function create()
     {
-        $childcats = Childcat::get();
-        return Inertia::render('SubChildCats/Create',compact('childcats'));
+        $data['user'] = auth()->user();
+        $data['childcats'] = Childcat::get();
+        return Inertia::render('SubChildCats/Create',$data);
     }
 
     /**
@@ -79,8 +80,10 @@ class SubchildcatController extends Controller
      */
     public function edit(Subchildcat $subchildcat)
     {
-        $childcats = Childcat::get();
-        return Inertia::render('SubChildCats/Edit',compact('subchildcat','childcats'));
+        $data['user'] = auth()->user();
+        $data['childcats'] = Childcat::get();
+        $data['subchildcat'] = $subchildcat;
+        return Inertia::render('SubChildCats/Edit',$data);
     }
 
     /**
@@ -119,13 +122,14 @@ class SubchildcatController extends Controller
     {
         $subchildcat->delete();
         return redirect()->route('subchildcat.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Trashted successfully');
     }
 
     public function subchildtrash()
     {
-        $subchildcats = Subchildcat::with('childcategory')->latest()->onlyTrashed()->paginate(15);
-        return Inertia::render('SubChildCats/Trash',compact('subchildcats'));
+        $data['user'] = auth()->user();
+        $data['subchildcats'] = Subchildcat::with('childcategory')->latest()->onlyTrashed()->paginate(15);
+        return Inertia::render('SubChildCats/Trash',$data);
     }
 
     public function restore($id)

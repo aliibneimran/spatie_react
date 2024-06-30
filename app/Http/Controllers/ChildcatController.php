@@ -32,8 +32,9 @@ class ChildcatController extends Controller
      */
     public function create()
     {
-        $subcats = Subcategory::get();
-        return Inertia::render('ChildCats/Create',compact('subcats'));
+        $data['user'] = auth()->user();
+        $data['subcats'] = Subcategory::get();
+        return Inertia::render('ChildCats/Create',$data);
     }
 
     /**
@@ -63,7 +64,7 @@ class ChildcatController extends Controller
         Childcat::create($data);
 
         return redirect()->route('childcat.index')
-            ->withInput()->with('success', 'Created successfully.');
+            ->withInput()->with('success', 'Data Created successfully.');
     }
 
     /**
@@ -79,8 +80,10 @@ class ChildcatController extends Controller
      */
     public function edit(Childcat $childcat)
     {
-        $subcats = Subcategory::get();
-        return Inertia::render('ChildCats/Edit',compact('childcat','subcats'));
+        $data['user'] = auth()->user();
+        $data['subcats'] = Subcategory::get();
+        $data['childcat'] = $childcat;
+        return Inertia::render('ChildCats/Edit',$data);
     }
 
     /**
@@ -110,7 +113,7 @@ class ChildcatController extends Controller
         $childcat->update($data);
 
         return redirect()->route('childcat.index')
-            ->with('success', 'Updated successfully.');
+            ->with('success', 'Data Updated successfully.');
     }
 
     /**
@@ -120,13 +123,14 @@ class ChildcatController extends Controller
     {
         $childcat->delete();
         return redirect()->route('childcat.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Data Trashted successfully');
     }
 
     public function childtrash()
     {
-        $childcats = Childcat::with('subcategory')->latest()->onlyTrashed()->paginate(15);
-        return Inertia::render('ChildCats/Trash',compact('childcats'));
+        $data['user'] = auth()->user();
+        $data['childcats'] = Childcat::with('subcategory')->latest()->onlyTrashed()->paginate(15);
+        return Inertia::render('ChildCats/Trash',$data);
     }
 
     public function restore($id)

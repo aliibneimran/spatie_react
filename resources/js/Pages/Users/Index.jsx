@@ -1,21 +1,22 @@
+import Status from "@/Components/Status";
 import Layout from "@/Layouts/Layout";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import React from "react";
 
 export default function Index() {
-    const { users, flash = {} ,permissions} = usePage().props;
-    const usersItems = users.data || [];
-    const { delete: deletedata } = useForm();
-// console.log(permissions)
+    const { users,user,status, flash = {} } = usePage().props;
+    const Items = users.data || [];
+    const userId = user.id;
+    const { delete: deleteData } = useForm();
     const handleDelete = (id) => {
         if (window.confirm("Do you want to Delete?")) {
-            deletedata(route("users.destroy", { user: id }));
+            deleteData(route("users.destroy", { user: id }));
         }
     };
+// console.log(userId)
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">All users</h1>
+                <h1 className="p-4 text-center h1">All Users</h1>
                 {/* Display Success Message */}
                 {flash.success && (
                     <div className="alert alert-success">{flash.success}</div>
@@ -40,27 +41,23 @@ export default function Index() {
                             <tr>
                                 <th>SI NO.</th>
                                 <th>Name</th>
+                                <th>Email</th>
                                 <th>Role</th>
+                                <th>Package</th>
                                 <th>Action</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {usersItems.length > 0 ? (
-                                usersItems.map((data, index) => (
+                            {Items.length > 0 ? (
+                                Items.map((data, index) => (
                                     <tr key={data.id}>
                                         <td>{index + 1}</td>
                                         <td>{data.name}</td>
-                                        <td>{data.type}</td>
+                                        <td>{data.email}</td>
+                                        <td>{data.role ? data.role.name : 'Uncategorized'}</td>
+                                        <td>{data.package ? data.package.package_name : 'Uncategorized'}</td>
                                         <td>
-                                            {/* <Link
-                                                href={route(
-                                                    "users.show",
-                                                    { users: data.id }
-                                                )}
-                                                className="btn btn-primary"
-                                            >
-                                                <i className="fa-solid fa-eye"></i>
-                                            </Link> */}
                                             <Link
                                                 href={route(
                                                     "users.edit",
@@ -68,7 +65,7 @@ export default function Index() {
                                                 )}
                                                 className="btn btn-info mx-1"
                                             >
-                                                <i className="fa-solid fa-pen-to-square"></i>
+                                               <i className="fa-solid fa-pen-to-square"></i>
                                             </Link>
                                             <button
                                                 onClick={() =>
@@ -79,6 +76,9 @@ export default function Index() {
                                                 <i className="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
+                                        <td>
+                                            <Status userId={data.id} initialStatus={data.status}></Status>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
@@ -88,19 +88,6 @@ export default function Index() {
                             )}
                         </tbody>
                     </table>
-                </div>
-                {/* Pagination Links */}
-                <div className="pagination justify-content-center mb-4">
-                    {users.links.map((link, index) => (
-                        <Link
-                            key={index}
-                            href={link.url}
-                            className={`page-link ${
-                                link.active ? "active" : ""
-                            }`}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                        />
-                    ))}
                 </div>
             </div>
         </Layout>

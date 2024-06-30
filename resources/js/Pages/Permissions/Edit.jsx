@@ -54,7 +54,7 @@ export default function Edit() {
                         <div className="col-xs-12 mt-3 mb-3 text-center">
                             <Link href={route('permissions.index')} className="btn btn-danger mx-2">Back</Link>
                             <button type="submit" className="btn btn-primary" disabled={processing}>
-                                {processing ? 'Submitting...' : 'Submit'}
+                                {processing ? 'Updating...' : 'Update'}
                             </button>
                         </div>
                     </div>

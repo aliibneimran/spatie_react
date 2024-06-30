@@ -1,7 +1,8 @@
-import { Link, useForm } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function LoginRight() {
+    const { flash } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -13,6 +14,7 @@ export default function LoginRight() {
             reset("password");
         };
     }, []);
+
 
     const submit = (e) => {
         e.preventDefault();
@@ -32,7 +34,11 @@ export default function LoginRight() {
                 <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-6 text-center">
                         <a className="d-block auth-logo">
-                            <img src="assets/images/logo.jpg" alt="Logo" height={28} />
+                            <img
+                                src="assets/images/logo.jpg"
+                                alt="Logo"
+                                height={28}
+                            />
                             {/* <span className="logo-txt">
                                                 MY HR LOUNGE
                                             </span> */}
@@ -49,6 +55,17 @@ export default function LoginRight() {
                                 Please sign in with your credentials
                             </p>
                         </div>
+                        {/* Display error message if account is inactive */}
+                        {errors.status && (
+                            <div className="alert alert-danger">
+                                {errors.status}
+                            </div>
+                        )}
+                        {flash.success && (
+                            <div className="alert alert-danger">
+                                {flash.success}
+                            </div>
+                        )}
                         <form className="mt-4 pt-2" onSubmit={submit}>
                             <div className="mb-3">
                                 <input
@@ -64,6 +81,11 @@ export default function LoginRight() {
                                         setData("email", e.target.value)
                                     }
                                 />
+                                {errors.email && (
+                                    <div className="text-danger">
+                                        {errors.email}
+                                    </div>
+                                )}
                             </div>
                             <div className="mb-3">
                                 <div className="input-group auth-pass-inputgroup">
@@ -83,6 +105,11 @@ export default function LoginRight() {
                                             setData("password", e.target.value)
                                         }
                                     />
+                                    {errors.password && (
+                                        <div className="text-danger">
+                                            {errors.password}
+                                        </div>
+                                    )}
                                     <button
                                         onClick={togglePasswordVisibility}
                                         className="btn btn-light shadow-none ms-0"

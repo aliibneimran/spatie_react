@@ -5,10 +5,11 @@ import React, { useEffect } from "react";
 export default function Edit() {
     const { subcategory, cats } = usePage().props;
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         cat_id: subcategory.cat_id || '',
         sub_cat_name: subcategory.sub_cat_name || '',
         image: null,
+        _method: 'put',
     });
 
     useEffect(() => {
@@ -18,7 +19,7 @@ export default function Edit() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('subcategory.update', subcategory.id), {
+        post(route('subcategory.update', subcategory.id), {
             forceFormData: true,
         });
     };

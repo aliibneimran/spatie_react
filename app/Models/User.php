@@ -51,6 +51,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public function package(){
-        return $this->belongsTo(Package::class);
+        return $this->belongsTo(Package::class,);
     }
 }

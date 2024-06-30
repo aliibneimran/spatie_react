@@ -4,30 +4,24 @@ import React, { useEffect } from "react";
 
 export default function Edit() {
     const { subchildcat, childcats } = usePage().props;
-    const { data, setData, put } = useForm({
-        childcat_id: subchildcat.childcat_id,
-        sub_child_cat_name: subchildcat.sub_child_cat_name,
-        image: null, // Initialize image if needed
+
+    // Initialize the form state with useForm hook
+    const { data, setData, post, processing, errors } = useForm({
+        childcat_id: subchildcat.childcat_id || '',
+        sub_child_cat_name: subchildcat.sub_child_cat_name || '',
+        image: null,
+        _method: 'put',
     });
 
+    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('subchildcat.update', subchildcat.id), {
-            data,
-            onSuccess: () => {
-                // Handle success if needed
-                console.log('Updated successfully.');
-            },
-            onError: (errors) => {
-                // Handle errors if needed
-                console.log(errors);
-            },
-        });
+        post(route('subchildcat.update', subchildcat.id));
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setData(name, value);
+    // Handle file input change
+    const handleFileChange = (e) => {
+        setData('image', e.target.files[0]);
     };
 
     return (
@@ -35,21 +29,21 @@ export default function Edit() {
             <div className="row">
                 <h1 className="p-4 text-center h1">Edit Sub Child Category</h1>
                 <div className="col-md-8 m-auto">
-                    <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <form onSubmit={handleSubmit}>
                         <div className="m-3">
                             <select
                                 name="childcat_id"
                                 className="form-control"
                                 value={data.childcat_id}
-                                onChange={handleInputChange}
+                                onChange={(e) => setData('childcat_id', e.target.value)}
                             >
                                 <option value="">Select Subcategory</option>
-                                {childcats.map((childcat) => (
-                                    <option key={childcat.id} value={childcat.id}>
-                                        {childcat.name}
-                                    </option>
+                                {childcats.map(childcat_id => (
+                                    <option key={childcat_id} value={childcat_id.id}>{childcat_id.child_cat_name}</option>
                                 ))}
                             </select>
+
+                            {errors.subcat_id && <div className="text-danger">{errors.subcat_id}</div>}
                         </div>
                         <div className="m-3">
                             <input
@@ -58,16 +52,18 @@ export default function Edit() {
                                 placeholder="Name"
                                 className="form-control"
                                 value={data.sub_child_cat_name}
-                                onChange={handleInputChange}
+                                onChange={(e) => setData('sub_child_cat_name', e.target.value)}
                             />
+                            {errors.sub_child_cat_name && <div className="text-danger">{errors.sub_child_cat_name}</div>}
                         </div>
                         <div className="m-3">
                             <input
                                 type="file"
                                 name="image"
                                 className="form-control"
-                                onChange={(e) => setData('image', e.target.files[0])}
+                                onChange={handleFileChange}
                             />
+                            {errors.image && <div className="text-danger">{errors.image}</div>}
                         </div>
                         <div className="m-3 text-center">
                             <Link
@@ -76,8 +72,8 @@ export default function Edit() {
                             >
                                 Back
                             </Link>
-                            <button type="submit" className="btn btn-success">
-                                Update
+                            <button type="submit" className="btn btn-success" disabled={processing}>
+                                {processing ? 'Updating...' : 'Update'}
                             </button>
                         </div>
                     </form>

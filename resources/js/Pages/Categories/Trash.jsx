@@ -3,7 +3,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Trash() {
-    const { category, flash = {} } = usePage().props; // permissions is now a paginator object
+    const { category, flash } = usePage().props; // permissions is now a paginator object
     // Extracting the items array from the paginator
     const categoryItems = category.data || [];
 
@@ -27,7 +27,7 @@ export default function Trash() {
                 <h1 className="p-4 text-center h1">Category Trash List</h1>
                 {/* Display Success Message */}
                 {flash.success && (
-                    <div className="alert alert-success">{flash.success}</div>
+                    <div className="alert alert-danger">{flash.success}</div>
                 )}
                 <div className="mb-4 text-center">
                     <Link

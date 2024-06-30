@@ -3,7 +3,7 @@ import { usePage } from "@inertiajs/react";
 
 export default function Dashboard() {
     const { user,notifications,permissions,unreadNotifications,readNotifications,haspermissions } = usePage().props;
-    console.log("per",haspermissions)
+    // console.log("per",haspermissions)
     return (
         <Layout
         user={user}
@@ -15,6 +15,7 @@ export default function Dashboard() {
         >
            <div className="row">
                 <h1>{user.name} Dashboard</h1>
+                <h2>Hi Client</h2>
            </div>
         </Layout>
     );

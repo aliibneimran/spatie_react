@@ -20,9 +20,9 @@ class PackageController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        $packages = Package::paginate(10);
-        return Inertia::render('Packages/Index', compact('packages','user'));
+        $data['user'] = auth()->user();
+        $data['packages'] = Package::paginate(10);
+        return Inertia::render('Packages/Index', $data);
     }
 
     /**
@@ -30,8 +30,8 @@ class PackageController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        return Inertia::render('Packages/Create',compact('user'));
+        $data['user'] = auth()->user();
+        return Inertia::render('Packages/Create',$data);
     }
 
     /**
@@ -76,7 +76,9 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        return Inertia::render('Packages/Edit',compact('package'));
+        $data['user'] = auth()->user();
+        $data['package'] = $package;
+        return Inertia::render('Packages/Edit',$data);
     }
 
     /**
@@ -103,7 +105,7 @@ class PackageController extends Controller
         $package->update($data);
 
         return redirect()->route('package.index')
-            ->withInput()->with('success', 'Created successfully.');
+            ->withInput()->with('success', 'Data updated successfully.');
     }
 
     /**
@@ -113,13 +115,14 @@ class PackageController extends Controller
     {
         $package->delete();
         return redirect()->route('package.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Data Trashted successfully');
     }
 
     public function pkgtrash()
     {
-        $packages = Package::latest()->onlyTrashed()->paginate(15);
-        return Inertia::render('Packages/Trash',compact('packages'));
+        $data['user'] = auth()->user();
+        $data['packages'] = Package::latest()->onlyTrashed()->paginate(15);
+        return Inertia::render('Packages/Trash',$data);
     }
 
     public function restore($id)

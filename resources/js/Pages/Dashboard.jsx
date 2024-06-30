@@ -8,7 +8,7 @@ export default function Dashboard() {
         <Layout user={user} haspermissions={haspermissions} notifications={notifications} unreadNotifications={unreadNotifications} readNotifications={readNotifications}>
            <div className="row">
                 <h1>{user.name} Dashboard</h1>
-                {/* <Global/> */}
+                <h2>Hi Admin</h2>
            </div>
         </Layout>
     );

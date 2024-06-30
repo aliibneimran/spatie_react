@@ -6,10 +6,11 @@ export default function Edit() {
     const { childcat, subcats } = usePage().props;
 
     // Initialize the form state with useForm hook
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         subcat_id: childcat.subcat_id || '',
         child_cat_name: childcat.child_cat_name || '',
         image: null,
+        _method: 'put',
     });
 
     // Populate form data when childcat changes
@@ -21,7 +22,7 @@ export default function Edit() {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('childcat.update', childcat.id));
+        post(route('childcat.update', childcat.id));
     };
 
     // Handle file input change

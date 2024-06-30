@@ -33,24 +33,26 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $user = auth()->user();
-        // $users = User::paginate(10);
-        // return Inertia::render('Users/Index',compact('users','user'));
-
         $user = auth()->user();
         $type = auth()->user()->type;
+        $status = auth()->user()->status;
         if ($type === 0) {
             $id = auth()->user()->id;
             // $data = User::orderBy('id', 'DESC')->paginate(10);
-            $users = User::where('client_id', $id )->orderBy('id', 'DESC')->paginate(10);
-            return Inertia::render('Users/Index', compact('users','user'));
+            $users = User::with('role', 'package')->where('client_id', $id)->orderBy('id', 'DESC')->paginate(10);
+            return Inertia::render('Users/Index', compact('users', 'user', 'status'));
         }
 
         if ($type === 1) {
             $id = auth()->user()->id;
-            $users = User::where('client_id', $id )->orderBy('id', 'DESC')->paginate(10);
-            return Inertia::render('Users/Index', compact('users','user'));
+            $users = User::with('role')->where('client_id', $id)->orderBy('id', 'DESC')->paginate(10);
+            return Inertia::render('Users/Index', compact('users', 'user', 'status'));
         }
+        // if ($type === 2) {
+        //     $id = auth()->user()->id;
+        //     $users = User::with('role')->where('client_id', $id )->orderBy('id', 'DESC')->paginate(10);
+        //     return Inertia::render('Users/Index', compact('users','user'));
+        // }
     }
 
     /**
@@ -61,7 +63,7 @@ class UserController extends Controller
         $user = auth()->user();
         $roles = Role::get();
         $packages = Package::all();
-        return Inertia::render('Users/Create',compact('roles','packages','user'));
+        return Inertia::render('Users/Create', compact('roles', 'packages', 'user'));
     }
 
     /**
@@ -69,34 +71,39 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required',
+            'roles' => 'required|array',
         ]);
 
+        // Prepare input data
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         $input['type'] = $request->type ?? 2;
         $input['client_id'] = auth()->user()->id;
         $input['child_client_id'] = $input['client_id'] . rand(11, 999);
-        $input['package_id'] = $request->package_id ?? NULL;
+        $input['package_id'] = $request->package ?? NULL;
         $input['business_name'] = $request->business_name ?? NULL;
         $input['client_address'] = $request->client_address ?? NULL;
         $input['client_mobile'] = $request->client_mobile ?? NULL;
-        $registration_date = $request->registration_date;
-        $input['registration_date'] = $registration_date ?? NULL;
-        $expire_date = $request->expire_date;
-        $input['expire_date'] = $expire_date ?? NULL;
+        $input['registration_date'] = $request->registration_date ?? NULL;
+        $input['expire_date'] = $request->expire_date ?? NULL;
 
-        // dd($input);
-
+        // Create the user
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
 
-        // send mail
+        // Fetch role names based on the IDs provided
+        // $user->assignRole($request->input('roles'));
+        $roleNames = Role::whereIn('id', $request->input('roles'))->pluck('name')->toArray();
+
+        // Assign roles to the user
+        $user->assignRole($roleNames);
+
+        // Send welcome email
         $urlLink = $request->root();
         $user = [
             'name' => $request->name,
@@ -104,14 +111,13 @@ class UserController extends Controller
             'password' => $request->password,
             'link' => $urlLink,
         ];
-        $email = $request->email;
-        Mail::to($email)->send(new WelcomeMail($user));
+        Mail::to($request->email)->send(new WelcomeMail($user));
 
-
-        // Notification
+        // Send notification
         $datas = $request->email;
         User::find(Auth::user()->id)->notify(new NewNotification($datas));
 
+        // Redirect with success message
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
     }
@@ -130,11 +136,12 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);
-        $roles = Role::all();
-        $userRole = $user->roles->pluck('name', 'name')->all();
+        $data['user'] = auth()->user();
+        $data['user'] = User::find($id);
+        $data['roles'] = Role::all();
+        $data['userRole'] = $data['user']->roles->pluck('name', 'name')->all();
         $packages = Package::all();
-        return Inertia::render('Users/Edit', compact('user', 'roles', 'userRole', 'packages'));
+        return Inertia::render('Users/Edit', $data);
     }
 
     /**
@@ -187,7 +194,7 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+            ->with('success', 'User Trashted successfully');
     }
     public function usertrash()
     {
@@ -214,15 +221,36 @@ class UserController extends Controller
     }
 
     // Active, deactive
-
+    // public function changeStatus(Request $request, $id)
+    // {
+    //     dd($request->all());
+    //     $input['status'] = $request->status ? $request->status : 0;
+    //     $user = User::find($id);
+    //     $user->update($input);
+    //     return redirect()->route('users.index')
+    //         ->with('success', 'Update Successfully');
+    // }
     public function changeStatus(Request $request, $id)
     {
+        // dd($request->all());
+        // $user = User::find($id);
 
-        $input['status'] = $request->status ? $request->status : 0;
+        // if ($user) {
+        //     $user->status = $request->status ? 1 : 0;
+        //     $user->save();
+
+        //     return redirect()->route('users.index')
+        //         ->with('success', 'Status updated successfully');
+        // }
+
+        // return redirect()->route('users.index')
+        //     ->with('error', 'User not found');
         $user = User::find($id);
-        $user->update($input);
-        return redirect()->route('users.index')
-            ->with('success', 'Update Successfully');
+        $user->status = $request->input('status');
+        $user->save();
+
+        return response()->json(['success' => 'Status updated successfully']);
+        // return redirect()->back()->with('success', 'Status updated successfully');
     }
 
     // notification

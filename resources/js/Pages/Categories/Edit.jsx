@@ -1,62 +1,63 @@
 import Layout from '@/Layouts/Layout';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function Edit() {
     const { category } = usePage().props;
-    const { data, setData, put, processing, errors } = useForm({
-        cat_name: category.cat_name,
-        cat_des: category.cat_des,
-        image: category.image
+
+    // Initialize the form state using useForm
+    const { data, setData, post, processing, errors } = useForm({
+        cat_name: category.cat_name || '',
+        image: null,
+        _method: 'put',
     });
+
+    // Handle input changes
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        const newValue = name === 'image' ? files[0] : value;
+        setData(name, newValue);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('category.update', category.id));
+        post(route('category.update',{ category: category.id }));
     };
 
     return (
         <Layout>
             <div className="row">
                 <h1 className='p-4 text-center h1'>Edit Category</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
+                <div className="col-md-8 m-auto">
+                    <form onSubmit={handleSubmit}>
                         <div className='m-3'>
                             <input
                                 type="text"
                                 name="cat_name"
+                                value={data.cat_name}
+                                onChange={handleChange}
                                 placeholder='Name'
                                 className='form-control'
-                                value={data.cat_name}
-                                onChange={(e) => setData('cat_name', e.target.value)}
                             />
-                        </div>
-                        <div className='m-3'>
-                            <input
-                                type="text"
-                                name="cat_des"
-                                placeholder='Describe'
-                                className='form-control'
-                                value={data.cat_des}
-                                onChange={(e) => setData('cat_des', e.target.value)}
-                            />
+                            {errors.cat_name && <div className="text-danger">{errors.cat_name}</div>}
                         </div>
                         <div className='m-3'>
                             <input
                                 type="file"
                                 name="image"
+                                onChange={handleChange}
                                 className='form-control'
-                                onChange={(e) => setData('image', e.target.files[0])}
                             />
+                            {errors.image && <div className="text-danger">{errors.image}</div>}
                         </div>
                         <div className='m-3 text-center'>
-                            <Link href={route('category.index')} className='btn btn-danger mx-2'>Back</Link>
+                        <Link href={route('category.index')} className='btn btn-danger mx-2'>Back</Link>
                             <button type='submit' className='btn btn-success' disabled={processing}>
-                                {processing ? 'Updating...' : 'Update'}
+                            {processing ? 'Updating...' : 'Update'}
                             </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </Layout>
     );

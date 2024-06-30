@@ -12,6 +12,7 @@ export default function Dashboard({ user }) {
         >
            <div className="row">
                 <h1>{user.name} Dashboard</h1>
+                <h2>Hi Employee</h2>
            </div>
         </Layout>
     );

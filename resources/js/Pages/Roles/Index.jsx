@@ -16,7 +16,7 @@ export default function Index() {
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">All roles</h1>
+                <h1 className="p-4 text-center h1">All Roles</h1>
                 {/* Display Success Message */}
                 {flash.success && (
                     <div className="alert alert-success">{flash.success}</div>

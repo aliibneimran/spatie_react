@@ -210,7 +210,7 @@ export default function SuperAdmin() {
                         <li className="side-nav-item">
                             <Link
                                 className="side-nav-link"
-                                href={route("permissions.index")}
+                                href={route("profile.edit")}
                             >
                                 Profile
                             </Link>

@@ -3,7 +3,7 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 import React from 'react';
 
 export default function Create() {
-    const { categories, flash = {} } = usePage().props;
+    const { categories } = usePage().props;
     // Initialize the form state using useForm
     const { data, setData, post, processing, errors } = useForm({
         cat_name: '',
@@ -28,7 +28,7 @@ export default function Create() {
         <Layout>
             <div className="row">
                 <h1 className='p-4 text-center h1'>Add Category</h1>
-                <div>
+                <div className="col-md-8 m-auto">
                     <form onSubmit={handleSubmit}>
                         <div className='m-3'>
                             <input

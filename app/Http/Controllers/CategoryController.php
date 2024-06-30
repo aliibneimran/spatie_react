@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -40,25 +39,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         // Validate the incoming request
         $request->validate([
             'cat_name' => 'required|string|min:3',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Example validation for image upload
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-        $filename = $request->image;
+        $data = [
+            'cat_name' => $request->cat_name,
+        ];
+
         if ($request->hasFile('image')) {
             $filename = time() . '.' . $request->image->extension();
             $request->image->move('images/cat', $filename);
+            $data['image'] = $filename;
         }
 
-        // Create new category instance
-        $category = new Category();
-        $category->cat_name = $request->cat_name;
-        $category->image = $filename ?? null; // Assign image path if it exists
-        $category->status = $request->status ?? 1; // Default status if not provided
-        $category->save();
+        Category::create($data);
 
-        return redirect()->route('category.index')->with('success', 'Category created successfully.');
+        return redirect()->route('category.index')->with('success', 'Data created successfully.');
     }
 
     /**
@@ -75,87 +74,36 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         $data['user'] = auth()->user();
-        $data['category'] = Category::findOrFail($category);
+        $data['category'] = $category;
         return Inertia::render('Categories/Edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Category $category)
     {
-        dd($request->all());
-        // Validate incoming request data
-        // $request->validate([
-        //     'cat_name' => 'required|string|min:3',
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Example validation for image upload
-        // ]);
-
-        // Handle file upload if an image is provided
+        // dd($request->all());
+        // Validate the incoming request
+        $request->validate([
+            'cat_name' => 'required|string|min:3',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $data = [
+            'cat_name' => $request->cat_name,
+        ];
         if ($request->hasFile('image')) {
-            $filename = time() . '.' . $request->image->getClientOriginalExtension();
+            $filename = time() . '.' . $request->image->extension();
             $request->image->move('images/cat', $filename);
-
-            // Delete previous image if exists and update with new one
-            // Assuming you have an 'image' field in your 'Category' model
-            if ($category->image) {
-                // Delete old image file if it exists
-                Storage::delete('images/cat/' . $category->image);
-            }
-
-            // Update category data including the new image path
-            $category->update([
-                'cat_name' => $request->cat_name,
-                'image' => $filename,
-                'status' => $request->status ?? 1,
-            ]);
-        } else {
-            // No new image uploaded, update only other fields
-            $category->update([
-                'cat_name' => $request->cat_name,
-                'status' => $request->status ?? 1,
-            ]);
+            $data['image'] = $filename;
         }
 
-        return redirect()->route('category.index')->with('success', 'Category updated successfully.');
+        $category->update($data);
+
+        return redirect()->route('category.index')->with('success', 'Data Updated successfully.');
     }
 
-    // public function update(Request $request, Category $category)
-    // {
-
-    //     // dd($request->all());
-    //     // Validate the incoming request
-    //     $request->validate([
-    //         'cat_name' => 'string|min:3',
-    //         'image' => 'image|mimes:jpeg,png,jpg|max:2048', // Example validation for image upload
-    //     ]);
-
-    //      // Handle file upload if an image is provided
-    //      if ($request->hasFile('image')) {
-    //         $filename = time() . '.' . $request->image->getClientOriginalExtension();
-    //         $request->image->move('images/cat', $filename);
-    //     } else {
-    //         $filename = $category->image; // If no new image uploaded, retain the existing one
-    //     }
-
-    //     // $filename = $request->image;
-    //     // if ($request->hasFile('image')) {
-    //     //     $filename = time() . '.' . $request->image->extension();
-    //     //     $request->image->move('images/cat', $filename);
-    //     // }
-    //     // else {
-    //     //     $filename = 'uploads/default_image.jpg';
-    //     // }
-    //     $data = [
-    //         'cat_name' => $request->cat_name,
-    //         'image' => $filename,
-    //     ];
-    //     // Save the updated category
-
-    //     $category->update($data);
-
-    //     return redirect()->route('category.index')->with('success', 'Category updated successfully.');
-    // }
 
     /**
      * Remove the specified resource from storage.
@@ -164,7 +112,7 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect()->route('category.index')
-            ->with('success', ' Deleted successfully');
+            ->with('success', ' Data Trashted successfully');
     }
 
     public function trash()

@@ -25,7 +25,7 @@ export default function Create() {
     return (
         <Layout>
             <div className="row">
-                <h1 className="p-4 text-center h1">Add subchildcat</h1>
+                <h1 className="p-4 text-center h1">Add Sub Child Category</h1>
                 <div className="col-md-8 m-auto">
                     <form onSubmit={handleSubmit}>
                         <div className="m-3">

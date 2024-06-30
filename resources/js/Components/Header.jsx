@@ -3,20 +3,31 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import OfCanvas from "./OfCanvas";
 import Notification from "./Notification";
+import { Navigate } from "react-router-dom";
+
 export default function Header() {
-    const { user,notifications,permissions,unreadNotifications,readNotifications } = usePage().props;
-
+    const { user, unreadNotifications, readNotifications } = usePage().props;
     const [showModal, setShowModal] = useState(false);
-
-
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
 
-    const [isMenuOpen, setIsMenuOpen] = useState(true);
-    const handleToggleMenu = () => {
-        toggleMenu(); // Call the toggleMenu function passed as prop
-        setIsMenuOpen(!isMenuOpen); // Toggle the menu state
+    // for auto logout
+    const logOut = async () => {
+        try {
+            await axios.post("/logout");
+            window.location.href = "./login";
+            // <Navigate to="/login" />
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
     };
+    useEffect(() => {
+        if (user && user.status === 0) {
+            alert("Your account is inactive. You will be logged out.");
+            logOut();
+        }
+    }, []);
+
     return (
         <div className="navbar-custom">
             <div className="topbar container-fluid">
@@ -26,11 +37,11 @@ export default function Header() {
                         {/* Logo light */}
                         <a href="index.html" className="logo-light">
                             <span className="logo-lg">
-                                <img src="assets/images/logo.png" alt="logo" />
+                                <img src="/assets/images/logo.png" alt="logo" />
                             </span>
                             <span className="logo-sm">
                                 <img
-                                    src="assets/images/logo-sm.png"
+                                    src="/assets/images/logo-sm.png"
                                     alt="small logo"
                                 />
                             </span>
@@ -39,50 +50,91 @@ export default function Header() {
                         <a href="index.html" className="logo-dark">
                             <span className="logo-lg">
                                 <img
-                                    src="assets/images/logo-dark.png"
+                                    src="/assets/images/logo-dark.png"
                                     alt="dark logo"
                                 />
                             </span>
                             <span className="logo-sm">
                                 <img
-                                    src="assets/images/logo-sm.png"
+                                    src="/assets/images/logo-sm.png"
                                     alt="small logo"
                                 />
                             </span>
                         </a>
                     </div>
                     {/* Sidebar Menu Toggle Button */}
-                    <button className="button-toggle-menu" onClick={handleToggleMenu}>
+                    <button className="button-toggle-menu">
                         <i className="mdi mdi-menu" />
                     </button>
                     {/* Page Title */}
                     <h4 className="page-title d-none d-sm-block">Dashboards</h4>
                     <button className="button-toggle-menu" onClick={handleShow}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="feather feather-grid"
+                        >
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
                     </button>
 
                     {showModal && (
-            <div className="modal show fade d-block" tabIndex={-1} role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" id="modalBody">
-              <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLongTitle">All Module</h5>
-                    <button type="button" className="btn-close bg-danger" onClick={handleClose} aria-label="Close">
-                      {/* <span aria-hidden="true">×</span> */}
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <Modal></Modal>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
-                    {/* <button type="button" className="btn btn-primary">Save changes</button> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          )}
+                        <div
+                            className="modal show fade d-block"
+                            tabIndex={-1}
+                            role="dialog"
+                            aria-labelledby="exampleModalCenterTitle"
+                            aria-hidden="true"
+                            id="modalBody"
+                        >
+                            <div
+                                className="modal-dialog modal-lg modal-dialog-centered"
+                                role="document"
+                            >
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5
+                                            className="modal-title"
+                                            id="exampleModalLongTitle"
+                                        >
+                                            All Module
+                                        </h5>
+                                        <button
+                                            type="button"
+                                            className="btn-close bg-danger"
+                                            onClick={handleClose}
+                                            aria-label="Close"
+                                        >
+                                            {/* <span aria-hidden="true">×</span> */}
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <Modal></Modal>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger"
+                                            onClick={handleClose}
+                                        >
+                                            Close
+                                        </button>
+                                        {/* <button type="button" className="btn btn-primary">Save changes</button> */}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <ul className="topbar-menu d-flex align-items-center gap-3">
                     <li className="dropdown d-lg-none">
@@ -117,7 +169,7 @@ export default function Header() {
                             aria-expanded="false"
                         >
                             <img
-                                src="assets/images/flags/us.jpg"
+                                src="/assets/images/flags/us.jpg"
                                 alt="user-image"
                                 className="me-0 me-sm-1"
                                 height={12}
@@ -134,7 +186,7 @@ export default function Header() {
                                 className="dropdown-item"
                             >
                                 <img
-                                    src="assets/images/flags/germany.jpg"
+                                    src="/assets/images/flags/germany.jpg"
                                     alt="user-image"
                                     className="me-1"
                                     height={12}
@@ -147,7 +199,7 @@ export default function Header() {
                                 className="dropdown-item"
                             >
                                 <img
-                                    src="assets/images/flags/italy.jpg"
+                                    src="/assets/images/flags/italy.jpg"
                                     alt="user-image"
                                     className="me-1"
                                     height={12}
@@ -160,7 +212,7 @@ export default function Header() {
                                 className="dropdown-item"
                             >
                                 <img
-                                    src="assets/images/flags/spain.jpg"
+                                    src="/assets/images/flags/spain.jpg"
                                     alt="user-image"
                                     className="me-1"
                                     height={12}
@@ -173,7 +225,7 @@ export default function Header() {
                                 className="dropdown-item"
                             >
                                 <img
-                                    src="assets/images/flags/russia.jpg"
+                                    src="/assets/images/flags/russia.jpg"
                                     alt="user-image"
                                     className="me-1"
                                     height={12}
@@ -182,7 +234,13 @@ export default function Header() {
                             </a>
                         </div>
                     </li>
-                  <Notification user notifications permissions unreadNotifications={unreadNotifications} readNotifications={readNotifications}></Notification>
+                    <Notification
+                        user
+                        notifications
+                        permissions
+                        unreadNotifications={unreadNotifications}
+                        readNotifications={readNotifications}
+                    ></Notification>
                     <li className="d-none d-sm-inline-block">
                         <a
                             className="nav-link"
@@ -199,7 +257,29 @@ export default function Header() {
                     </li>
                     <li className="d-none d-sm-inline-block">
                         <div className="nav-link" id="light-dark-mode">
-                        <a  data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></a>
+                            <a
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight"
+                                aria-controls="offcanvasRight"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="feather feather-repeat"
+                                >
+                                    <polyline points="17 1 21 5 17 9"></polyline>
+                                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                                    <polyline points="7 23 3 19 7 15"></polyline>
+                                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                                </svg>
+                            </a>
                         </div>
                         <OfCanvas></OfCanvas>
                     </li>
@@ -214,7 +294,7 @@ export default function Header() {
                         >
                             <span className="account-user-avatar">
                                 <img
-                                    src="assets/images/users/avatar-1.jpg"
+                                    src="/assets/images/users/avatar-1.jpg"
                                     alt="user-image"
                                     width={32}
                                     className="rounded-circle"
@@ -222,7 +302,7 @@ export default function Header() {
                             </span>
                             <span className="d-lg-block d-none">
                                 <h5 className="my-0 fw-normal">
-                                    Adams
+                                    {user.name}
                                     <i className="ri-arrow-down-s-line fs-22 d-none d-sm-inline-block align-middle" />
                                 </h5>
                             </span>
@@ -230,7 +310,9 @@ export default function Header() {
                         <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
                             {/* item*/}
                             <div className="dropdown-header noti-title">
-                                <h6 className="text-overflow m-0">Welcome !</h6>
+                                <h6 className="text-overflow m-0">
+                                    {user.email}
+                                </h6>
                             </div>
                             {/* item*/}
                             <a
@@ -240,7 +322,10 @@ export default function Header() {
                                 <i className="ri-account-pin-circle-line fs-16 align-middle me-1" />
                                 <span>My Account</span>
                             </a>
-                            <Link href={ route('logout') } method='post' as='button'
+                            <Link
+                                href={route("logout")}
+                                method="post"
+                                as="button"
                                 className="dropdown-item"
                             >
                                 <i className="ri-logout-circle-r-line align-middle me-1" />
