@@ -12,6 +12,7 @@ export default function Index() {
             deleteData(route("users.destroy", { user: id }));
         }
     };
+
 // console.log(userId)
     return (
         <Layout>

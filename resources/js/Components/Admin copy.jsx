@@ -2,8 +2,10 @@ import { Link, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Admin() {
-    const {user, permissions} = usePage().props
-    console.log(permissions)
+    const {user, haspermissions} = usePage().props
+    // const hasPermission = haspermissions && haspermissions.length > 0;
+    // const permissionNames = haspermissions.map(haspermissions => haspermissions.name);
+    console.log(haspermissions)
     return (
         <ul className="side-nav">
             <li className="side-nav-item">
@@ -210,6 +212,7 @@ export default function Admin() {
                     <span> Grievance</span>
                 </Link>
             </li>
+
         </ul>
     );
 }

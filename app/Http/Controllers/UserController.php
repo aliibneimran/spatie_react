@@ -232,19 +232,7 @@ class UserController extends Controller
     // }
     public function changeStatus(Request $request, $id)
     {
-        // dd($request->all());
-        // $user = User::find($id);
 
-        // if ($user) {
-        //     $user->status = $request->status ? 1 : 0;
-        //     $user->save();
-
-        //     return redirect()->route('users.index')
-        //         ->with('success', 'Status updated successfully');
-        // }
-
-        // return redirect()->route('users.index')
-        //     ->with('error', 'User not found');
         $user = User::find($id);
         $user->status = $request->input('status');
         $user->save();

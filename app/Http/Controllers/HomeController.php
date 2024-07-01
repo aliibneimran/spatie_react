@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -19,6 +20,31 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+    public function userData()
+    {
+        // $user = auth()->user();
+        // $type = auth()->user()->type;
+        // if (!$user) {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
+        // $haspermissions = DB::table('role_has_permissions')
+        // ->join('model_has_roles', 'role_has_permissions.role_id', '=', 'model_has_roles.role_id')
+        // ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+        // ->where('model_has_roles.model_id', $user->id)
+        // // ->where('model_has_roles.model_id', 2)
+        // ->where('model_has_roles.model_type', 'App\\Models\\User')
+        // ->select('permissions.*')
+        // ->get();
+        // Fetch user's permissions using Spatie methods
+        // $permissions = $user->permissions;
+        $haspermissions = DB::table('role_has_permissions')->get();
+
+        return response()->json($haspermissions);
+        // if ( $type === 1 ) {
+        //     return Inertia::render('Admin', $permissions);
+        // }
+    }
+
     public function index()
     {
         $user = auth()->user();
