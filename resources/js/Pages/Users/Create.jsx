@@ -309,7 +309,7 @@ export default function Create() {
                             )}
                             {type === 1 && (
                                 <>
-                                    <div className="mb-3 col-md-6">
+                                    <div className="mb-3 col-md-4 content-center m-auto">
                                         <label className="form-label">
                                             User Role
                                         </label>

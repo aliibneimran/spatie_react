@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import LoginLeft from "@/Components/LoginLeft";
 import LoginRight from "@/Components/LoginRight";
 
 export default function Login() {
+    const {user ,flash} = usePage().props;
+    console.log("success",flash)
     return (
         <div className="auth-page">
             <div className="container-fluid p-0">
@@ -15,7 +16,7 @@ export default function Login() {
 
                     </div>
                     <div className="col-xxl-6 col-lg-6 col-md-6">
-                        <LoginRight></LoginRight>
+                        <LoginRight user={user} flash={flash}></LoginRight>
                         {/* end auth full page content */}
                     </div>
                     {/* end col */}

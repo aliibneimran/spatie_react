@@ -5,7 +5,7 @@ export default function Admin() {
     const {user, haspermissions} = usePage().props
     // const hasPermission = haspermissions && haspermissions.length > 0;
     // const permissionNames = haspermissions.map(haspermissions => haspermissions.name);
-    console.log(haspermissions)
+    // console.log(haspermissions)
     return (
         <ul className="side-nav">
             <li className="side-nav-item">

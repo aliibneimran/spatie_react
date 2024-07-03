@@ -18,10 +18,6 @@ class User extends Authenticatable
     public function role(){
         return $this->belongsTo(Role::class,'type');
     }
-    public function permissions()
-    {
-        return $this->getAllPermissions();
-    }
     /**
      * The attributes that are mass assignable.
      *

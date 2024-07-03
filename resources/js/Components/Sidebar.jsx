@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import SuperAdmin from "./SuperAdmin";
 import Admin from "./Admin";
 import { Link, usePage } from "@inertiajs/react";
 import User from "./User";
 
-export default function Sidebar() {
-    const { user,notifications,haspermissions } = usePage().props;
-    // console.log("usertype",user.type)
+export default function Sidebar({ user, permissions,isOpen  }) {
+    // const { user, permissions} = usePage().props;
+    // console.log(permissions)
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    console.log('Sidebar isOpen:', isOpen);
     return (
-        <div className='leftside-menu'>
+        // <div className='leftside-menu'>
+        <div className={`leftside-menu ${isOpen ? 'sidebar-enable' : ''}`}>
             {/* Logo Light */}
             <Link href="index.html" className="logo logo-light">
                 <span className="logo-lg">
@@ -30,9 +34,9 @@ export default function Sidebar() {
             {/* Sidebar */}
             <div data-simplebar>
             {/* <SuperAdmin/> */}
-                {user.type === 0 && <SuperAdmin user={user} haspermissions={haspermissions} notifications={notifications}/>}
-                {user.type === 1 && <Admin user={user} haspermissions={haspermissions} notifications={notifications}/>}
-                {user.type === 2 && <User />}
+                {user.type === 0 && <SuperAdmin user={user} permissions={permissions} />}
+                {user.type === 1 && <Admin user={user} permissions={permissions} />}
+                {user.type === 2 && <User user={user} permissions={permissions}/>}
 
             </div>
         </div>

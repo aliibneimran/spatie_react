@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChildcatController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LangController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
@@ -26,18 +29,25 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Auth/Login', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Auth/Login', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+Route::get('/', [AuthenticatedSessionController::class, 'create']);
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// password Forget & reset
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 // profile manage
 Route::get('/profile-manage', [HomeController::class, 'profileUpdateShow'])->name('profile.edit');
@@ -91,13 +101,13 @@ Route::resource('package', PackageController::class);
     Route::patch('package/{id}/restore', [PackageController::class, 'restore'])->name('package.restore');
     Route::delete('package/{id}/delete', [PackageController::class, 'delete'])->name('package.delete');
 
+Route::get('lang/change', [LangController::class, 'change'])->name('change.lang');
 
-
-Route::middleware(['auth', 'role:Super Admin'])->group(function () {
-    Route::get('/admin', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('admin.dashboard');
-});
+// Route::middleware(['auth', 'role:Super Admin'])->group(function () {
+//     Route::get('/admin', function () {
+//         return Inertia::render('Admin/Dashboard');
+//     })->name('admin.dashboard');
+// });
 
 
 require __DIR__.'/auth.php';

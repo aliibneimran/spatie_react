@@ -1,14 +1,20 @@
 import Header from "@/Components/Header";
 import Sidebar from "@/Components/Sidebar";
 import { Link, usePage } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Layout({ children}) {
-  const { user,notifications,haspermissions,unreadNotifications,readNotifications} = usePage().props;
+  const { user,unreadNotifications,readNotifications,permissions = [] } = usePage().props;
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
     return (
        <div>
   <div className="wrapper">
-    <Header user={user} haspermissions={haspermissions} notifications={notifications} unreadNotifications={unreadNotifications} readNotifications={readNotifications}></Header>
-    <Sidebar user={user} haspermissions={haspermissions} notifications={notifications}></Sidebar>
+    <Header toggleSidebar={toggleSidebar} user={user} permissions={permissions} unreadNotifications={unreadNotifications} readNotifications={readNotifications}></Header>
+    <Sidebar isOpen={isSidebarOpen} user={user} permissions={permissions}></Sidebar>
 
     <div className="content-page">
       <div className="content">
@@ -155,14 +161,14 @@ export default function Layout({ children}) {
     </div>
     <div className="offcanvas-footer border-top p-3 text-center">
       <div className="row">
-        <div className="col-6">
-          <button type="button" className="btn btn-light w-100" id="reset-layout">
+        <div className="col-6 m-auto">
+          <button type="button" className="btn btn-info w-100" id="reset-layout">
             Reset
           </button>
         </div>
-        <div className="col-6">
+        {/* <div className="col-6">
           <a href="#" role="button" className="btn btn-primary w-100">Buy Now</a>
-        </div>
+        </div> */}
       </div>
     </div>
   </div>

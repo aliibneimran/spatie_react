@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LocalizationHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
@@ -20,73 +22,94 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-    public function userData()
-    {
-        // $user = auth()->user();
-        // $type = auth()->user()->type;
-        // if (!$user) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-        // $haspermissions = DB::table('role_has_permissions')
-        // ->join('model_has_roles', 'role_has_permissions.role_id', '=', 'model_has_roles.role_id')
-        // ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
-        // ->where('model_has_roles.model_id', $user->id)
-        // // ->where('model_has_roles.model_id', 2)
-        // ->where('model_has_roles.model_type', 'App\\Models\\User')
-        // ->select('permissions.*')
-        // ->get();
-        // Fetch user's permissions using Spatie methods
-        // $permissions = $user->permissions;
-        $haspermissions = DB::table('role_has_permissions')->get();
-
-        return response()->json($haspermissions);
-        // if ( $type === 1 ) {
-        //     return Inertia::render('Admin', $permissions);
-        // }
-    }
 
     public function index()
     {
-        $user = auth()->user();
-        $data['user'] = $user;
-        $type = auth()->user()->type;
+        // $locale = App::getLocale();
+        $locale = App::getLocale();
+        $translations = __('messages', [], $locale);
+        // $translations = LocalizationHelper::getTranslations();
+        // dd($translations);
+        // $translations = __('messages');
 
-        // Example: Set session data
-        session()->put('key', 'value');
+        $user = auth()->user();
+        $type = $user->type;
+
+        // Fetch user's permissions using Eloquent method
+        $haspermissions = $user->getAllPermissions()->pluck('name');
 
         // Fetch notifications using Eloquent
-        $data['notifications'] = DB::table('notifications')->get();
+        $notifications = DB::table('notifications')->get();
 
-        // Fetch user's permissions using raw SQL with joins
-        $data['haspermissions'] = DB::table('role_has_permissions')
-            ->join('model_has_roles', 'role_has_permissions.role_id', '=', 'model_has_roles.role_id')
-            ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
-            ->where('model_has_roles.model_id', $user->id)
-            // ->where('model_has_roles.model_id', 2)
-            ->where('model_has_roles.model_type', 'App\\Models\\User')
-            ->select('permissions.*')
-            ->get();
-        // dd($data['haspermissions']);
         // Fetch unread and read notifications
-        $data['unreadNotifications'] = $user->unreadNotifications;
-        $data['readNotifications'] = $user->readNotifications;
+        $unreadNotifications = $user->unreadNotifications;
+        $readNotifications = $user->readNotifications;
+
+        // Data to pass to the view
+        $data = [
+            'user' => $user,
+            'haspermissions' => $haspermissions,
+            'notifications' => $notifications,
+            'unreadNotifications' => $unreadNotifications,
+            'readNotifications' => $readNotifications,
+            // 'locale' => $locale,
+            'translations' => $translations,
+        ];
 
         // Render view based on user type
-        if ( $type === 0 ) {
-            return Inertia::render('Dashboard', $data);
-        }
-        if ( $type === 1 ) {
-            return Inertia::render('Admin', $data);
-        }
-        if ( $type === 2 ) {
-            return Inertia::render('User', $data);
-        }
+        $view = match ($type) {
+            0 => 'Dashboard',
+            1 => 'Admin',
+            2 => 'User',
+            default => 'Dashboard',
+        };
 
+        return Inertia::render($view, $data);
     }
+
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     $data['user'] = $user;
+    //     $type = auth()->user()->type;
+
+    //     // Example: Set session data
+    //     session()->put('key', 'value');
+
+    //     // Fetch notifications using Eloquent
+    //     $data['notifications'] = DB::table('notifications')->get();
+
+    //     // $data['haspermissions'] = $user->getAllPermissions()->pluck('name');
+    //     // Fetch user's permissions using raw SQL with joins
+    //     $data['haspermissions'] = DB::table('role_has_permissions')
+    //         ->join('model_has_roles', 'role_has_permissions.role_id', '=', 'model_has_roles.role_id')
+    //         ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+    //         ->where('model_has_roles.model_id', $user->id)
+    //         // ->where('model_has_roles.model_id', 2)
+    //         ->where('model_has_roles.model_type', 'App\\Models\\User')
+    //         ->select('permissions.*')
+    //         ->get();
+    //     // dd($data['haspermissions']);
+    //     // Fetch unread and read notifications
+    //     $data['unreadNotifications'] = $user->unreadNotifications;
+    //     $data['readNotifications'] = $user->readNotifications;
+
+    //     // Render view based on user type
+    //     if ( $type === 0 ) {
+    //         return Inertia::render('Dashboard', $data);
+    //     }
+    //     if ( $type === 1 ) {
+    //         return Inertia::render('Admin', $data);
+    //     }
+    //     if ( $type === 2 ) {
+    //         return Inertia::render('User', $data);
+    //     }
+
+    // }
     public function profileUpdateShow()
     {
         $data['user'] = auth()->user();
-        return Inertia::render('Profile/ProfileManage',$data);
+        return Inertia::render('Profile/ProfileManage', $data);
     }
     public function profileUpdate(Request $request)
     {
@@ -108,11 +131,13 @@ class HomeController extends Controller
 
     public function passwordChangeindex()
     {
-        return view('profile.password-change');
+        $data['user'] = Auth::user();
+        return Inertia::render('Profile/ChangePassword',$data);
     }
 
     public function passwordChangeStore(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
             'new_password' => ['required'],
@@ -122,7 +147,6 @@ class HomeController extends Controller
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
 
         // dd('Password chanzge successfully.');
-        return back()->with('message', 'Password change successfully.');
+        return back()->with('success', 'Password change successfully.');
     }
-
 }

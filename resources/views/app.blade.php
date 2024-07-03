@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
@@ -24,7 +25,7 @@
 	<script src="{{asset('assets/js/config.js')}}"></script>
 
 	<!-- App css -->
-	<link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
+	<link href="{{asset('assets/css/app.css')}}" rel="stylesheet" type="text/css" id="app-style" />
 
 	<!-- Icons css -->
 	<link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
@@ -55,6 +56,6 @@
         <script src="{{asset('assets/js/pages/dashboard.js')}}"></script>
 
         <!-- App js -->
-        <script src="{{asset('assets/js/app.min.js')}}"></script>
+        <script src="{{asset('assets/js/app.js')}}"></script>
     </body>
 </html>

@@ -1,7 +1,9 @@
 /* @tailwind base; */
 /* @tailwind components; */
 /* @tailwind utilities; */
-
+#usericon{
+    font-size: 20px;
+}
 #topmodal{
     margin-top: 60px;
 }
@@ -33,3 +35,9 @@
 {
     color: white;
 }
+
+.active-link {
+    background-color: #575a55;
+    font-weight: bold;
+}
+

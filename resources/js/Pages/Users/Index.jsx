@@ -3,17 +3,18 @@ import Layout from "@/Layouts/Layout";
 import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Index() {
-    const { users,user,status, flash = {} } = usePage().props;
+    const { users,user,permissions, flash = {} } = usePage().props;
     const Items = users.data || [];
-    const userId = user.id;
     const { delete: deleteData } = useForm();
     const handleDelete = (id) => {
         if (window.confirm("Do you want to Delete?")) {
             deleteData(route("users.destroy", { user: id }));
         }
     };
+    // const permissionNames = haspermissions.map(permission => permission);
 
-// console.log(userId)
+    console.log('userpage:', user.type);
+    // console.log('Permission Names:', permissionNames);
     return (
         <Layout>
             <div className="row">
@@ -29,12 +30,13 @@ export default function Index() {
                     >
                         Add New
                     </Link>
+                    {user.type === 0 &&
                     <Link
                         href={route("users.trash")}
                         className="btn btn-info"
                     >
                         Trash List
-                    </Link>
+                    </Link>}
                 </div>
                 <div className="table-responsive">
                     <table className="table table-hover">
@@ -44,7 +46,7 @@ export default function Index() {
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Package</th>
+                                {user.type === 0 && <th>Package</th>}
                                 <th>Action</th>
                                 <th>Status</th>
                             </tr>
@@ -57,7 +59,7 @@ export default function Index() {
                                         <td>{data.name}</td>
                                         <td>{data.email}</td>
                                         <td>{data.role ? data.role.name : 'Uncategorized'}</td>
-                                        <td>{data.package ? data.package.package_name : 'Uncategorized'}</td>
+                                        {user.type === 0 && <td>{data.package ? data.package.package_name : 'Uncategorized'}</td>}
                                         <td>
                                             <Link
                                                 href={route(
@@ -68,6 +70,7 @@ export default function Index() {
                                             >
                                                <i className="fa-solid fa-pen-to-square"></i>
                                             </Link>
+                                            {user.type === 0 &&
                                             <button
                                                 onClick={() =>
                                                     handleDelete(data.id)
@@ -75,7 +78,7 @@ export default function Index() {
                                                 className="btn btn-danger"
                                             >
                                                 <i className="fa-solid fa-trash"></i>
-                                            </button>
+                                            </button>}
                                         </td>
                                         <td>
                                             <Status userId={data.id} initialStatus={data.status}></Status>

@@ -24,7 +24,7 @@ class RoleController extends Controller
     {
         $data['user'] = auth()->user();
         $data['roles'] = Role::paginate(10);
-        $data['permissions'] = Permission::all();
+        // $data['allpermissions'] = Permission::all();
         return Inertia::render('Roles/Index',$data);
     }
 

@@ -3,7 +3,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
-    const { roles, flash = {} } = usePage().props;
+    const { roles,permissions, flash = {} } = usePage().props;
 
     const roleItems = roles.data || [];
     const { delete: deletedata } = useForm();
@@ -13,6 +13,7 @@ export default function Index() {
             deletedata(route("roles.destroy", { role: id }));
         }
     };
+    console.log('roles:', permissions);
     return (
         <Layout>
             <div className="row">

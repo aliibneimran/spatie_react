@@ -22,6 +22,8 @@ class AuthenticatedSessionController extends Controller
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'user' => auth()->user(),
+            'flash' => session()->get('flash'),
         ]);
     }
 
@@ -32,19 +34,19 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         // Check if the authenticated user's status is 0
-        // if (Auth::user()->status == 0) {
-        //     Auth::guard('web')->logout();
-        //     return redirect()->route('login')->withErrors([
-        //         'status' => 'Your account is inactive.',
-        //     ]);
-        // }
-        if (auth()->user()->status == 0) {
+        if (Auth::user()->status == 0) {
             Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect('/')->with('success', 'Your account is inactive. Please contact support.');
+            return redirect()->route('login')->withErrors([
+                'status' => 'Your account is inactive. Please contact support.',
+            ]);
         }
+        // if (auth()->user()->status == 0) {
+        //     Auth::guard('web')->logout();
+        //     $request->session()->invalidate();
+        //     $request->session()->regenerateToken();
+
+        //     return redirect('/')->with('success', 'Your account is inactive. Please contact support.');
+        // }
 
         $request->session()->regenerate();
 

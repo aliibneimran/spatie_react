@@ -1,90 +1,108 @@
-import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import React from 'react';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { Ziggy } from '@/ziggy';
 
-export default function ResetPassword({ token, email }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        token: token,
-        email: email,
+export default function ResetPassword() {
+    const { token,flash } = usePage().props;
+    const { data, setData, post, processing, errors } = useForm({
+        email: '',
         password: '',
         password_confirmation: '',
+        token: token || '',
     });
-
-    useEffect(() => {
-        return () => {
-            reset('password', 'password_confirmation');
-        };
-    }, []);
-
+    console.log("cdfvfd",Ziggy.routes);
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('password.store'));
+        post(route('reset.password.post'));
     };
 
     return (
-        <GuestLayout>
-            <Head title="Reset Password" />
+        <div className="auth-full-page-content d-flex p-sm-5 p-2 col-6 m-auto">
+            <div className="w-75 m-auto">
+                <div className="d-flex flex-column h-100">
+                    <div className="mb-4 mb-md-6 text-center">
+                        <a className="d-block auth-logo">
+                            <img
+                                src="/assets/images/logo.jpg"
+                                alt="Logo"
+                                height={28}
+                            />
+                        </a>
+                    </div>
+                    <div className="auth-content my-auto">
+                        <div className="text-center">
+                            <p className="text-muted mt-2 h3">Reset Password?</p>
+                        </div>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
+                        <form className="mt-4 pt-2" onSubmit={submit}>
+                            <div className="mb-3">
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                />
+                                {errors.email && (
+                                    <div className="text-danger">
+                                        {errors.email}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mb-3">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                />
+                                {errors.password && (
+                                    <div className="text-danger">
+                                        {errors.password}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mb-3">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    placeholder="Confirm Password"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                />
+                                {errors.password_confirmation && (
+                                    <div className="text-danger">
+                                        {errors.password_confirmation}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mb-3">
+                                <button
+                                    className="btn btn-primary w-100 waves-effect waves-light"
+                                    type="submit"
+                                    disabled={processing}
+                                >
+                                    Reset Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="mt-4 mt-md-3 text-center">
+                        <p className="mb-0">
+                            <span className="p-2">© Hr Lounge.</span>
+                            Developed by{' '}
+                            <Link href="#">A &amp; A Consulting Limited</Link>
+                        </p>
+                    </div>
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                    />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+            </div>
+        </div>
     );
 }

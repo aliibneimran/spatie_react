@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        //cors
         \App\Http\Middleware\CorsMiddleware::class,
     ];
 
@@ -39,12 +40,20 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            //permission for global
+            \App\Http\Middleware\SharePermissions::class,
+            //language
+            \App\Http\Middleware\LanguageManager::class,
+            //status
+            \App\Http\Middleware\CheckStatus::class,
+
         ],
 
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            //cors
             \App\Http\Middleware\CorsMiddleware::class,
 
         ],

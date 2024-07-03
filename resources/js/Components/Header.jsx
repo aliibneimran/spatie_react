@@ -4,9 +4,18 @@ import Modal from "./Modal";
 import OfCanvas from "./OfCanvas";
 import Notification from "./Notification";
 import { Navigate } from "react-router-dom";
+import Language from "./Language";
 
-export default function Header() {
+export default function Header({toggleSidebar  }) {
     const { user, unreadNotifications, readNotifications } = usePage().props;
+    const [selectedLocale, setSelectedLocale] = useState('en'); // Example initial locale state
+
+    const handleLanguageChange = (event) => {
+        setSelectedLocale(event.target.value);
+        // Optionally, you can send an API request to update the backend session as well
+    };
+
+
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
@@ -27,6 +36,7 @@ export default function Header() {
             logOut();
         }
     }, []);
+ 
 
     return (
         <div className="navbar-custom">
@@ -63,7 +73,7 @@ export default function Header() {
                         </a>
                     </div>
                     {/* Sidebar Menu Toggle Button */}
-                    <button className="button-toggle-menu">
+                    <button className="button-toggle-menu" onClick={toggleSidebar }>
                         <i className="mdi mdi-menu" />
                     </button>
                     {/* Page Title */}
@@ -160,79 +170,7 @@ export default function Header() {
                         </div>
                     </li>
                     <li className="dropdown">
-                        <a
-                            className="nav-link dropdown-toggle arrow-none"
-                            data-bs-toggle="dropdown"
-                            href="#"
-                            role="button"
-                            aria-haspopup="false"
-                            aria-expanded="false"
-                        >
-                            <img
-                                src="/assets/images/flags/us.jpg"
-                                alt="user-image"
-                                className="me-0 me-sm-1"
-                                height={12}
-                            />
-                            <span className="align-middle d-none d-lg-inline-block">
-                                English
-                            </span>
-                            <span className="mdi mdi-chevron-down fs-22 d-none d-sm-inline-block align-middle" />
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated">
-                            {/* item*/}
-                            <a
-                                href="javascript:void(0);"
-                                className="dropdown-item"
-                            >
-                                <img
-                                    src="/assets/images/flags/germany.jpg"
-                                    alt="user-image"
-                                    className="me-1"
-                                    height={12}
-                                />
-                                <span className="align-middle">German</span>
-                            </a>
-                            {/* item*/}
-                            <a
-                                href="javascript:void(0);"
-                                className="dropdown-item"
-                            >
-                                <img
-                                    src="/assets/images/flags/italy.jpg"
-                                    alt="user-image"
-                                    className="me-1"
-                                    height={12}
-                                />
-                                <span className="align-middle">Italian</span>
-                            </a>
-                            {/* item*/}
-                            <a
-                                href="javascript:void(0);"
-                                className="dropdown-item"
-                            >
-                                <img
-                                    src="/assets/images/flags/spain.jpg"
-                                    alt="user-image"
-                                    className="me-1"
-                                    height={12}
-                                />
-                                <span className="align-middle">Spanish</span>
-                            </a>
-                            {/* item*/}
-                            <a
-                                href="javascript:void(0);"
-                                className="dropdown-item"
-                            >
-                                <img
-                                    src="/assets/images/flags/russia.jpg"
-                                    alt="user-image"
-                                    className="me-1"
-                                    height={12}
-                                />
-                                <span className="align-middle">Russian</span>
-                            </a>
-                        </div>
+                        <Language locale={selectedLocale} onChange={handleLanguageChange}></Language>
                     </li>
                     <Notification
                         user
@@ -292,13 +230,17 @@ export default function Header() {
                             aria-haspopup="false"
                             aria-expanded="false"
                         >
-                            <span className="account-user-avatar">
-                                <img
+                            <span className="account-user-avatar" id="usericon">
+                                {/* <img
                                     src="/assets/images/users/avatar-1.jpg"
                                     alt="user-image"
                                     width={32}
                                     className="rounded-circle"
-                                />
+                                /> */}
+                                {/* <i class="fa-solid fa-circle-user"></i> */}
+                                {/* <i class="fa-regular fa-user"></i> */}
+                                {/* <i class="fa-solid fa-user-large"></i> */}
+                                <i class="fa-regular fa-circle-user"></i>
                             </span>
                             <span className="d-lg-block d-none">
                                 <h5 className="my-0 fw-normal">
