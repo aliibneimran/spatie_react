@@ -6,15 +6,14 @@ import Notification from "./Notification";
 import { Navigate } from "react-router-dom";
 import Language from "./Language";
 
-export default function Header({toggleSidebar  }) {
+export default function Header({ toggleSidebar }) {
     const { user, unreadNotifications, readNotifications } = usePage().props;
-    const [selectedLocale, setSelectedLocale] = useState('en'); // Example initial locale state
+    const [selectedLocale, setSelectedLocale] = useState("en"); // Example initial locale state
 
     const handleLanguageChange = (event) => {
         setSelectedLocale(event.target.value);
         // Optionally, you can send an API request to update the backend session as well
     };
-
 
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
@@ -36,7 +35,10 @@ export default function Header({toggleSidebar  }) {
             logOut();
         }
     }, []);
- 
+    const handleToggleClick = () => {
+        // console.log("Toggle button clicked");
+        toggleSidebar();
+    };
 
     return (
         <div className="navbar-custom">
@@ -73,9 +75,17 @@ export default function Header({toggleSidebar  }) {
                         </a>
                     </div>
                     {/* Sidebar Menu Toggle Button */}
-                    <button className="button-toggle-menu" onClick={toggleSidebar }>
+
+                    <button
+                        className="button-toggle-menu"
+                        onClick={handleToggleClick}
+                    >
                         <i className="mdi mdi-menu" />
                     </button>
+
+
+
+
                     {/* Page Title */}
                     <h4 className="page-title d-none d-sm-block">Dashboards</h4>
                     <button className="button-toggle-menu" onClick={handleShow}>
@@ -170,7 +180,10 @@ export default function Header({toggleSidebar  }) {
                         </div>
                     </li>
                     <li className="dropdown">
-                        <Language locale={selectedLocale} onChange={handleLanguageChange}></Language>
+                        <Language
+                            locale={selectedLocale}
+                            onChange={handleLanguageChange}
+                        ></Language>
                     </li>
                     <Notification
                         user
@@ -179,7 +192,7 @@ export default function Header({toggleSidebar  }) {
                         unreadNotifications={unreadNotifications}
                         readNotifications={readNotifications}
                     ></Notification>
-                    <li className="d-none d-sm-inline-block">
+                    {/* <li className="d-none d-sm-inline-block">
                         <a
                             className="nav-link"
                             data-bs-toggle="offcanvas"
@@ -187,12 +200,12 @@ export default function Header({toggleSidebar  }) {
                         >
                             <span className="ri-settings-3-line fs-22" />
                         </a>
-                    </li>
-                    <li className="d-none d-sm-inline-block">
+                    </li> */}
+                    {/* <li className="d-none d-sm-inline-block">
                         <div className="nav-link" id="light-dark-mode">
                             <i className="ri-moon-line fs-22" />
                         </div>
-                    </li>
+                    </li> */}
                     <li className="d-none d-sm-inline-block">
                         <div className="nav-link" id="light-dark-mode">
                             <a
@@ -257,13 +270,20 @@ export default function Header({toggleSidebar  }) {
                                 </h6>
                             </div>
                             {/* item*/}
-                            <a
-                                href="pages-profile.html"
+                            <Link
+                                href={route("profile.edit")}
                                 className="dropdown-item"
                             >
-                                <i className="ri-account-pin-circle-line fs-16 align-middle me-1" />
-                                <span>My Account</span>
-                            </a>
+                                <i class="fa-regular fa-user me-1"></i>
+                                <span>Edit Profile</span>
+                            </Link>
+                            <Link
+                                href={route("change.password")}
+                                className="dropdown-item"
+                            >
+                               <i class="fa-solid fa-key me-1"></i>
+                                <span>Change Password</span>
+                            </Link>
                             <Link
                                 href={route("logout")}
                                 method="post"

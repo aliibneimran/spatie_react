@@ -45,7 +45,7 @@ export default function Create() {
                         <div className="m-4">
                             <div className="row">
                                 {permissions.map((permission) => (
-                                    <div key={permission.id} className="col-md-4">
+                                    <div key={permission.id} className="col-md-3">
                                         <input
                                             type="checkbox"
                                             id={`permission-${permission.id}`}

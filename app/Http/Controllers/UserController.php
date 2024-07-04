@@ -136,11 +136,12 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $data['user'] = auth()->user();
-        $data['user'] = User::find($id);
+        $data['user'] = User::with('role')->where('client_id', $id)->find($id);
+        // $data['user'] = User::find($id);
+        $data['users'] = auth()->user();
         $data['roles'] = Role::all();
         $data['userRole'] = $data['user']->roles->pluck('name', 'name')->all();
-        $packages = Package::all();
+        $data['packages'] = Package::all();
         return Inertia::render('Users/Edit', $data);
     }
 

@@ -41,3 +41,25 @@
     font-weight: bold;
 }
 
+/* side nav custom csss */
+
+/* html[data-sidenav-size=condensed] .wrapper .content-page {
+    margin-left: var(--tz-leftbar-width-sm);
+    min-height: var(--tz-leftbar-condensed-height);
+} */
+html[data-sidenav-size=condensed] .wrapper .navbar-custom {
+    z-index: 1005;
+    margin-left: var(--tz-leftbar-width-sm);
+
+    background: var(--tz-topbar-bg);
+    border-bottom: 1px solid var(--tz-border-color);
+    min-height: var(--tz-topbar-height);
+    margin-left: var(--tz-leftbar-width);
+    position: sticky;
+    top: 0;
+    -webkit-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+    z-index: 1000;
+}
+
+

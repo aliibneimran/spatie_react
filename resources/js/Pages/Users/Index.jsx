@@ -4,6 +4,7 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Index() {
     const { users,user,permissions, flash = {} } = usePage().props;
+    const permissionNames = permissions;
     const Items = users.data || [];
     const { delete: deleteData } = useForm();
     const handleDelete = (id) => {
@@ -13,8 +14,8 @@ export default function Index() {
     };
     // const permissionNames = haspermissions.map(permission => permission);
 
-    console.log('userpage:', user.type);
-    // console.log('Permission Names:', permissionNames);
+    // console.log('user_id:', user.type);
+    // console.log('Permission Names:', permissions);
     return (
         <Layout>
             <div className="row">
@@ -61,6 +62,7 @@ export default function Index() {
                                         <td>{data.role ? data.role.name : 'Uncategorized'}</td>
                                         {user.type === 0 && <td>{data.package ? data.package.package_name : 'Uncategorized'}</td>}
                                         <td>
+                                        {permissionNames.includes('user-list') && (
                                             <Link
                                                 href={route(
                                                     "users.edit",
@@ -70,6 +72,7 @@ export default function Index() {
                                             >
                                                <i className="fa-solid fa-pen-to-square"></i>
                                             </Link>
+                                        )}
                                             {user.type === 0 &&
                                             <button
                                                 onClick={() =>

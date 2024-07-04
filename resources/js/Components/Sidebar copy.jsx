@@ -3,14 +3,13 @@ import SuperAdmin from "./SuperAdmin";
 import Admin from "./Admin";
 import { Link, usePage } from "@inertiajs/react";
 import User from "./User";
-import { useSidebar } from "@/SidebarContext";
 
-export default function Sidebar({ user, permissions, isOpen }) {
-    // const { isOpen, toggleSidebar } = useSidebar();
+export default function Sidebar({ user, permissions  }) {
+    // const { user, permissions} = usePage().props;
+    // console.log(permissions)
 
-    console.log("SB-isSidebarOpen:", isOpen); // Log current state
     return (
-        <div className={`leftside-menu ${isOpen ? "" : "expand"}`}>
+        <div className='leftside-menu'>
             {/* Logo Light */}
             <Link href="index.html" className="logo logo-light">
                 <span className="logo-lg">
@@ -29,20 +28,13 @@ export default function Sidebar({ user, permissions, isOpen }) {
                     <img src="/assets/images/logo.png" alt="small logo" />
                 </span>
             </Link>
-
-
             {/* Sidebar */}
-            <div dataSimplebar>
-                {/* <SuperAdmin/> */}
-                {user.type === 0 && (
-                    <SuperAdmin user={user} permissions={permissions} />
-                )}
-                {user.type === 1 && (
-                    <Admin user={user} permissions={permissions} />
-                )}
-                {user.type === 2 && (
-                    <User user={user} permissions={permissions} />
-                )}
+            <div data-simplebar>
+            {/* <SuperAdmin/> */}
+                {user.type === 0 && <SuperAdmin user={user} permissions={permissions} />}
+                {user.type === 1 && <Admin user={user} permissions={permissions} />}
+                {user.type === 2 && <User user={user} permissions={permissions}/>}
+
             </div>
         </div>
     );

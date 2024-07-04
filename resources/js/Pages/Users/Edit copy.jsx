@@ -3,10 +3,8 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Edit() {
-    const { user,users, roles,userRole, packages,permissions } = usePage().props;
-    const type = users.type;
-   console.log('user_id:', user.type);
-    console.log('Permission Names:', permissions);
+    const { user, roles,userRole, packages } = usePage().props;
+    const type = user.type;
 
     const { data, setData, post, processing, errors } = useForm({
         name: "",

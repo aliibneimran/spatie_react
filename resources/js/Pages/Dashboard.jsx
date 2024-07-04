@@ -9,6 +9,7 @@ export default function Dashboard() {
            <div className="row text-center p-4">
                 {/* <h1>{user.name} Dashboard</h1> */}
                 <h2> {translations.title}</h2>
+
            </div>
         </Layout>
     );

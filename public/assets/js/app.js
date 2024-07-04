@@ -482,7 +482,7 @@ class ThemeCustomizer {
                 self.changeTopbarColor(element.value);
             })
         });
-     
+
 
 
         //TopBar Light Dark
@@ -508,7 +508,7 @@ class ThemeCustomizer {
         var menuToggleBtn = document.querySelector('.button-toggle-menu');
         if (menuToggleBtn) {
             menuToggleBtn.addEventListener('click', function () {
-                var configSize = self.config.sidenav.size;
+                var configSize = self.config.sidenav.size; 
                 var size = self.html.getAttribute('data-sidenav-size', configSize);
 
                 if (size === 'full') {
