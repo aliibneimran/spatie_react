@@ -51,7 +51,6 @@ export default function Language() {
                 {Object.entries(languages).map(([lang, { name, flag }]) => (
                     <a
                         key={lang}
-                        href="javascript:void(0);"
                         className="dropdown-item"
                         onClick={() => handleChange(lang)}
                     >

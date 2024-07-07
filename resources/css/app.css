@@ -49,6 +49,9 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+#sidemenu ul li a{
+    font-size: 12px;
+}
 #sidemenu{
     /* background-image: url("../../public/assets/images/sidebar/sbg4.jpg"); */
     /* padding-top: 5px; */
@@ -74,6 +77,7 @@
     background-size: cover;
     background-repeat: no-repeat; */
 }
+
 
 
 
