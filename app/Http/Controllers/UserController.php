@@ -136,11 +136,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $data['user'] = User::with('role')->where('client_id', $id)->find($id);
-        // $data['user'] = User::find($id);
-        $data['users'] = auth()->user();
+        $data['users'] = User::find($id);
+        $data['user'] = auth()->user();
         $data['roles'] = Role::all();
-        $data['userRole'] = $data['user']->roles->pluck('name', 'name')->all();
+        $data['userRole'] = $data['users']->roles->pluck('name', 'name')->all();
         $data['packages'] = Package::all();
         return Inertia::render('Users/Edit', $data);
     }
@@ -148,45 +147,98 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
+//     public function update(Request $request, string $id)
+// {
+//     $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|email|unique:users,email,' . $id,
+//         'password' => 'nullable|string|min:8|confirmed',
+//         'roles' => 'required|array',
+//     ]);
+
+//     $input = $request->except(['roles', 'password_confirmation']);
+//     if ($request->filled('password')) {
+//         $input['password'] = Hash::make($request->password);
+//     }
+
+//     $user = User::findOrFail($id);
+//     $user->update($input);
+
+//     $user->syncRoles($request->roles);
+
+//     return redirect()->route('users.index')
+//         ->with('success', 'User updated successfully');
+// }
     public function update(Request $request, string $id)
     {
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'required|string|min:8|confirmed',
-            'roles' => '',
+            'password' => 'nullable|string|min:8|confirmed',
+            'roles' => 'required|array',
+
         ]);
-        // dd($request->all());
 
-
-
-        $input = $request->all();
-        if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
+        $input = $request->except(['roles', 'password_confirmation']);
+        if ($request->filled('password')) {
+            $input['password'] = Hash::make($request->password);
         } else {
-            $input = Arr::except($input, array('password'));
+            $input['password'] = $user->password; // Retain old password if not provided
         }
 
+        if ($request->email !== $user->email) {
+            $input['email'] = $request->email;
+        } else {
+            $input['email'] = $user->email; // Retain old email if not provided
+        }
 
-        $input['package_id'] = $request->package_id ?? NULL;
-        $input['business_name'] = $request->business_name ?? NULL;
-        $input['client_address'] = $request->client_address ?? NULL;
-        $input['client_mobile'] = $request->client_mobile ?? NULL;
-        $registration_date = $request->registration_date;
-        $input['registration_date'] = $registration_date ?? NULL;
-        $expire_date = $request->expire_date;
-        $input['expire_date'] = $expire_date ?? NULL;
-
-        // dd($input);
-        $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-
-        $user->assignRole($request->input('roles'));
+        $user->syncRoles($request->roles);
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
     }
+
+    // public function update(Request $request, string $id)
+    // {
+    //     // dd($request->all());
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email,' . $id,
+    //         'password' => 'required|string|min:8|confirmed',
+    //         'roles' => '',
+    //     ]);
+
+
+    //     $input = $request->all();
+    //     if (!empty($input['password'])) {
+    //         $input['password'] = Hash::make($input['password']);
+    //     } else {
+    //         $input = Arr::except($input, array('password'));
+    //     }
+
+
+    //     $input['package_id'] = $request->package_id ?? NULL;
+    //     $input['business_name'] = $request->business_name ?? NULL;
+    //     $input['client_address'] = $request->client_address ?? NULL;
+    //     $input['client_mobile'] = $request->client_mobile ?? NULL;
+    //     $registration_date = $request->registration_date;
+    //     $input['registration_date'] = $registration_date ?? NULL;
+    //     $expire_date = $request->expire_date;
+    //     $input['expire_date'] = $expire_date ?? NULL;
+
+    //     // dd($input);
+    //     $user = User::find($id);
+    //     $user->update($input);
+    //     DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+    //     $user->assignRole($request->input('roles'));
+
+    //     return redirect()->route('users.index')
+    //         ->with('success', 'User updated successfully');
+    // }
 
     /**
      * Remove the specified resource from storage.

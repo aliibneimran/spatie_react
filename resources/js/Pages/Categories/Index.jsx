@@ -52,10 +52,19 @@ export default function Index() {
                                         <td>{index + 1}</td>
                                         <td>{data.cat_name}</td>
                                         <td>
-                                            {data.image && (
+                                            {data.image ? (
                                                 <img
                                                     src={`/images/cat/${data.image}`}
                                                     alt={data.cat_name}
+                                                    style={{
+                                                        maxWidth: "50px",
+                                                        maxHeight: "50px",
+                                                    }}
+                                                />
+                                            ) : (
+                                                <img
+                                                    src="https://dummyimage.com/300x200/000/fff.jpg&text=image"
+                                                    alt="Placeholder"
                                                     style={{
                                                         maxWidth: "50px",
                                                         maxHeight: "50px",

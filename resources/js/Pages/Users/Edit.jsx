@@ -1,38 +1,54 @@
 import Layout from "@/Layouts/Layout";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Edit() {
-    const { user,users, roles,userRole, packages,permissions } = usePage().props;
-    const type = users.type;
-   console.log('user_id:', user.type);
-    console.log('Permission Names:', permissions);
+    const { user, users, roles, packages } = usePage().props;
+    const type = user.type;
 
-    const { data, setData, post, processing, errors } = useForm({
-        name: "",
-        email: "",
+    const { data, setData, put, processing, errors } = useForm({
+        name: users.name || "",
+        email: users.email || "",
         password: "",
         password_confirmation: "",
-        roles: [],
-        package: "",
-        business_name: "",
-        client_mobile: "",
-        registration_date: "",
-        expire_date: "",
-        client_address: "",
+        roles: users.roles?.map(role => role.id) || [],
+        package_id: users.package_id || "",
+        business_name: users.business_name || "",
+        client_mobile: users.client_mobile || "",
+        registration_date: users.registration_date || "",
+        expire_date: users.expire_date || "",
+        client_address: users.client_address || "",
         type: type === 0 ? 1 : 2,
         _method: 'put'
     });
 
+    useEffect(() => {
+        setData({
+            name: users.name || "",
+            email: users.email || "",
+            password: "",
+            password_confirmation: "",
+            roles: users.roles?.map(role => role.id) || [],
+            package_id: users.package_id || "",
+            business_name: users.business_name || "",
+            client_mobile: users.client_mobile || "",
+            registration_date: users.registration_date || "",
+            expire_date: users.expire_date || "",
+            client_address: users.client_address || "",
+            type: type === 0 ? 1 : 2,
+            _method: 'put'
+        });
+    }, [user, type]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = {
-            ...data,
-            roles: type === 1 ? ["2"] : data.roles,
-            type: type === 1 ? 2 : 1,
-        };
-        console.log("Submitting Form Data:", formData);
-        post(route("users.store"), { data: formData });
+        const formData = { ...data };
+        // Remove password fields if they are empty
+        if (!formData.password) {
+            delete formData.password;
+            delete formData.password_confirmation;
+        }
+        put(route("users.update", users.id), { data: formData });
     };
 
     return (
@@ -127,18 +143,11 @@ export default function Edit() {
                                             User Role
                                         </label>
                                         <select
-                                            name="roles[]"
+                                            name="roles"
                                             className="form-control"
                                             value={data.roles}
                                             onChange={(e) =>
-                                                setData(
-                                                    "roles",
-                                                    Array.from(
-                                                        e.target
-                                                            .selectedOptions,
-                                                        (option) => option.value
-                                                    )
-                                                )
+                                                setData("roles", [e.target.value])
                                             }
                                         >
                                             <option value="">
@@ -164,12 +173,12 @@ export default function Edit() {
                                             Package
                                         </label>
                                         <select
-                                            name="package"
+                                            name="package_id"
                                             className="form-control"
-                                            value={data.package}
+                                            value={data.package_id}
                                             onChange={(e) =>
                                                 setData(
-                                                    "package",
+                                                    "package_id",
                                                     e.target.value
                                                 )
                                             }
@@ -186,9 +195,9 @@ export default function Edit() {
                                                 </option>
                                             ))}
                                         </select>
-                                        {errors.package && (
+                                        {errors.package_id && (
                                             <div className="text-danger">
-                                                {errors.package}
+                                                {errors.package_id}
                                             </div>
                                         )}
                                     </div>
@@ -303,59 +312,9 @@ export default function Edit() {
                                             </div>
                                         )}
                                     </div>
-                                    <input
-                                        type="hidden"
-                                        name="type"
-                                        value="1"
-                                    />
                                 </>
                             )}
-                            {type === 1 && (
-                                <>
-                                    <div className="mb-3 col-md-6">
-                                        <label className="form-label">
-                                            User Role
-                                        </label>
-                                        <select
-                                            name="roles[]"
-                                            className="form-control"
-                                            value={data.roles}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "roles",
-                                                    Array.from(
-                                                        e.target
-                                                            .selectedOptions,
-                                                        (option) => option.value
-                                                    )
-                                                )
-                                            }
-                                        >
-                                            <option>
-                                            Select
-                                            </option>
-
-                                            <option  value="2">
-                                            Employee
-                                            </option>
-
-                                        </select>
-                                        {errors.roles && (
-                                            <div className="text-danger">
-                                                {errors.roles}
-                                            </div>
-                                        )}
-                                    </div>
-                                    {/* <input type="hidden" name="roles[]" value="Employee" /> */}
-                                    <input
-                                        type="hidden"
-                                        name="type"
-                                        value="2"
-                                    />
-                                </>
-                            )}
-                        </div>
-                        <div className="m-3 text-center">
+                            <div className="m-3 text-center">
                             <Link
                                 href={route("users.index")}
                                 className="btn btn-danger mx-2"
@@ -369,6 +328,7 @@ export default function Edit() {
                             >
                                 {processing ? "Updating..." : "Update"}
                             </button>
+                        </div>
                         </div>
                     </form>
                 </div>

@@ -24,6 +24,7 @@ export default function Admin() {
                     <span> Dahboard</span>
                 </Link>
             </li>
+            {permissionNames.includes('HR Admin') && (
             <li className="side-nav-item">
                 <Link
                     data-bs-toggle="collapse"
@@ -46,6 +47,7 @@ export default function Admin() {
                     </ul>
                 </div>
             </li>
+            )}{permissionNames.includes('Security') && (
             <li className="side-nav-item">
                 <Link
                     data-bs-toggle="collapse"
@@ -92,6 +94,7 @@ export default function Admin() {
                     </ul>
                 </div>
             </li>
+            )}{permissionNames.includes('Employee Info') && (
             <li className="side-nav-item">
                 <Link
                     data-bs-toggle="collapse"
@@ -114,6 +117,7 @@ export default function Admin() {
                     </ul>
                 </div>
             </li>
+            )}{permissionNames.includes('Org Chart') && (
             <li className="side-nav-item">
                 <Link
                     data-bs-toggle="collapse"
@@ -136,6 +140,7 @@ export default function Admin() {
                     </ul>
                 </div>
             </li>
+            )}{permissionNames.includes('Lifecycle') && (
             <li className="side-nav-item">
                 <Link
                     data-bs-toggle="collapse"
@@ -158,84 +163,98 @@ export default function Admin() {
                     </ul>
                 </div>
             </li>
+            )}{permissionNames.includes('Leave') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-umbrella-beach"></i>
                     <span> Leave</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Attendance') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-clipboard-user"></i>
                     <span> Attendance</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Payroll') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-money-check-dollar"></i>
                     <span> Payroll</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Claim') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-circle-exclamation"></i>
                     <span> Claims</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Reports') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-file-circle-check"></i>
                     <span> Reports</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Report Viewer') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-eye"></i>
                     <span> Report Viewer</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Workforce') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-users-gear"></i>
                     <span> Workforce</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Recruitment') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-store"></i>
                     <span> Recruitment</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Performance') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-chart-line"></i>
                     <span> Performence</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Learning') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-chalkboard-user"></i>
                     <span> Learning</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Probation') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-graduation-cap"></i>
                     <span> Probation</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Request') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-hand"></i>
                     <span> Request</span>
                 </Link>
             </li>
+            )}{permissionNames.includes('Grievance') && (
             <li className="side-nav-item">
                 <Link href={route("dashboard")} className="side-nav-link">
                     <i className="fa-solid fa-comments"></i>
                     <span> Grievance</span>
                 </Link>
             </li>
+            )}
 
 
         </ul>

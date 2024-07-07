@@ -38,28 +38,42 @@
 
 .active-link {
     background-color: #575a55;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 /* side nav custom csss */
 
-/* html[data-sidenav-size=condensed] .wrapper .content-page {
-    margin-left: var(--tz-leftbar-width-sm);
-    min-height: var(--tz-leftbar-condensed-height);
-} */
-html[data-sidenav-size=condensed] .wrapper .navbar-custom {
-    z-index: 1005;
-    margin-left: var(--tz-leftbar-width-sm);
-
-    background: var(--tz-topbar-bg);
-    border-bottom: 1px solid var(--tz-border-color);
-    min-height: var(--tz-topbar-height);
-    margin-left: var(--tz-leftbar-width);
-    position: sticky;
-    top: 0;
-    -webkit-transition: all .25s ease-in-out;
-    transition: all .25s ease-in-out;
-    z-index: 1000;
+.leftside-menu{
+    background-image: url("../../public/assets/images/sidebar/sbg2.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
+#sidemenu{
+    /* background-image: url("../../public/assets/images/sidebar/sbg1.jpg"); */
+    /* padding-top: 5px; */
+    /* background-position: center;
+    background-size: cover; */
+    /* background-attachment: fixed; */
+    /* background-blend-mode: lighten; */
+}
+.content-page{
+    /* background-image: url("../../public/assets/images/login/hr (3).jpg"); */
+    /* background-image: url("../../public/assets/images/auth-bg-dark.jpg"); */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* color: white; */
+}
+.footer{
+    /* color: white; */
+}
+.navbar-custom{
+    /* background-image: url("../../public/assets/images/auth-bg.jpg"); */
+    /* background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat; */
+}
+
 
 

@@ -59,7 +59,25 @@ class PermissionTableSeeder extends Seeder
             'subchildcat-edit',
             'subchildcat-delete',
 
-            
+            'HR Admin',
+            'Security',
+            'Employee Info',
+            'Org Chart',
+            'Lifecycle',
+            'Leave',
+            'Attendance',
+            'Payroll',
+            'Claim',
+            'Reports',
+            'Report Viewer',
+            'Workforce',
+            'Recruitment',
+            'Performance',
+            'Learning',
+            'Probation',
+            'Request',
+            'Grievance',
+
 
 
         ];

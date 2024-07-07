@@ -3,14 +3,13 @@ import SuperAdmin from "./SuperAdmin";
 import Admin from "./Admin";
 import { Link, usePage } from "@inertiajs/react";
 import User from "./User";
-import { useSidebar } from "@/SidebarContext";
 
-export default function Sidebar({ user, permissions, isOpen }) {
-    // const { isOpen, toggleSidebar } = useSidebar();
+export default function Sidebar({ user, permissions, isCollapsed }) {
 
-    console.log("SB-isSidebarOpen:", isOpen); // Log current state
+    // console.log('user_id:', user.type);
+    // console.log("SB-isCollapsed:", isCollapsed);
     return (
-        <div className={`leftside-menu ${isOpen ? "" : "expand"}`}>
+        <div className={`leftside-menu ${isCollapsed ? "collapsed" : ""}`}>
             {/* Logo Light */}
             <Link href="index.html" className="logo logo-light">
                 <span className="logo-lg">
@@ -32,7 +31,7 @@ export default function Sidebar({ user, permissions, isOpen }) {
 
 
             {/* Sidebar */}
-            <div dataSimplebar>
+            <div data-simplebar id="sidemenu">
                 {/* <SuperAdmin/> */}
                 {user.type === 0 && (
                     <SuperAdmin user={user} permissions={permissions} />
