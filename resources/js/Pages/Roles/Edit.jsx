@@ -1,7 +1,7 @@
 // resources/js/Pages/Roles/Edit.jsx
 
 import Layout from '@/Layouts/Layout';
-import { usePage, useForm, Link } from '@inertiajs/react';
+import { usePage, useForm, Link, Head } from '@inertiajs/react';
 import React, { useEffect } from 'react';
 
 export default function Edit() {
@@ -28,6 +28,7 @@ export default function Edit() {
 
     return (
         <Layout>
+            <Head title="Edit Role" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">Edit Role</h1>
                 <div>

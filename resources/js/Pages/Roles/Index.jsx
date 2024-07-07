@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
@@ -16,6 +16,7 @@ export default function Index() {
     console.log('roles:', permissions);
     return (
         <Layout>
+            <Head title="All Role" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">All Roles</h1>
                 {/* Display Success Message */}

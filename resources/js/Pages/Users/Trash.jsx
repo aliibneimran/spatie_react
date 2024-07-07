@@ -1,11 +1,11 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Trash() {
-    const { user, flash = {} } = usePage().props; // permissions is now a paginator object
+    const { user, users, flash = {} } = usePage().props; // permissions is now a paginator object
     // Extracting the items array from the paginator
-    const userItems = user.data || [];
+    const userItems = users.data || [];
 
     // Using useForm to handle API requests
     const { delete: deletedata ,patch: restoredata} = useForm();
@@ -23,6 +23,7 @@ export default function Trash() {
 
     return (
         <Layout>
+            <Head title="User Trash List" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">User Trash List</h1>
                 {/* Display Success Message */}
@@ -86,7 +87,7 @@ export default function Trash() {
                 </div>
                 {/* Pagination Links */}
                 <div className="pagination justify-content-center mb-4">
-                    {user.links.map((link, index) => (
+                    {users.links.map((link, index) => (
                         <Link
                             key={index}
                             href={link.url}

@@ -44,13 +44,13 @@
 /* side nav custom csss */
 
 .leftside-menu{
-    background-image: url("../../public/assets/images/sidebar/sbg2.jpg");
+    background-image: url("../../public/assets/images/sidebar/sbg4.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 #sidemenu{
-    /* background-image: url("../../public/assets/images/sidebar/sbg1.jpg"); */
+    /* background-image: url("../../public/assets/images/sidebar/sbg4.jpg"); */
     /* padding-top: 5px; */
     /* background-position: center;
     background-size: cover; */

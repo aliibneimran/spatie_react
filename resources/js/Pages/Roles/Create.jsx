@@ -1,7 +1,7 @@
 // resources/js/Pages/Roles/Create.jsx
 
 import Layout from '@/Layouts/Layout';
-import { usePage, useForm, Link } from '@inertiajs/react';
+import { usePage, useForm, Link, Head } from '@inertiajs/react';
 import React from 'react';
 
 export default function Create() {
@@ -28,6 +28,7 @@ export default function Create() {
 
     return (
         <Layout>
+            <Head title="Add Role" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">Add Role</h1>
                 <div>

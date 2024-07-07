@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Index() {
@@ -16,6 +16,7 @@ export default function Index() {
 
     return (
         <Layout>
+            <Head title="All Sub Child Category" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">All Sub Child Category</h1>
                 {/* Display Success Message */}

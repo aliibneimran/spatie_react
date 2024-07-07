@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, usePage, useForm } from "@inertiajs/react";
+import { Link, usePage, useForm, Head } from "@inertiajs/react";
 import React from "react";
 
 export default function ChangePassword() {
@@ -17,6 +17,7 @@ export default function ChangePassword() {
 
     return (
         <Layout>
+            <Head title="Change Password" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">Change Password</h1>
                 <div className="col-md-8 m-auto">

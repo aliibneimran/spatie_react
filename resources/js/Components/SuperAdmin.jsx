@@ -80,7 +80,7 @@ export default function SuperAdmin() {
                         ])
                             ? "show"
                             : ""
-                    }`}
+                         }`}
                     id="Categories"
                 >
                     <ul className="side-nav-second-level">

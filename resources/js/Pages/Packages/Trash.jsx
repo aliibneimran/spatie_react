@@ -23,6 +23,7 @@ export default function Trash() {
 
     return (
         <Layout>
+            <Head title="Package Trash List" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">Package Trash List</h1>
                 {/* Display Success Message */}

@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Trash() {
@@ -22,6 +22,7 @@ export default function Trash() {
     };
     return (
         <Layout>
+            <Head title=" Sub Child Category Trash List" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">
                     Sub Child Category Trash List

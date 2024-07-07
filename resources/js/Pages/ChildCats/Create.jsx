@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
 
 export default function Create() {
@@ -25,6 +25,7 @@ export default function Create() {
 
     return (
         <Layout>
+             <Head title="Add Child Category" ></Head>
             <div className="row">
                  <h1 className="p-4 text-center h1">Add Child Category</h1>
                 <div className="col-md-8 m-auto">

@@ -1,5 +1,5 @@
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 
 export default function Edit() {
@@ -53,6 +53,7 @@ export default function Edit() {
 
     return (
         <Layout>
+            <Head title="Edit User" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">Edit User</h1>
                 <div>

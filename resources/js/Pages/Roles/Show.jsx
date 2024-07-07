@@ -1,11 +1,12 @@
 import Layout from "@/Layouts/Layout";
-import { Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 
 export default function Show() {
     const { role, permissions } = usePage().props; // Assuming 'role' object is passed as a prop
     return (
         <Layout>
+            <Head title="User Based Role" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">{role.name}</h1>
                 <h2 className="h4">Permissions:</h2>

@@ -251,8 +251,9 @@ class UserController extends Controller
     }
     public function usertrash()
     {
-        $user = User::onlyTrashed()->latest()->paginate(10);
-        return Inertia::render('Users/Trash', compact('user'));
+        $data['user'] = auth()->user();
+        $data['users'] = User::onlyTrashed()->latest()->paginate(10);
+        return Inertia::render('Users/Trash', $data);
     }
 
     public function restore($id)

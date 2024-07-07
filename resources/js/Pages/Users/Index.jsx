@@ -1,6 +1,6 @@
 import Status from "@/Components/Status";
 import Layout from "@/Layouts/Layout";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Index() {
     const { users,user,permissions, flash = {} } = usePage().props;
@@ -12,12 +12,20 @@ export default function Index() {
             deleteData(route("users.destroy", { user: id }));
         }
     };
+
+    //active route
+    const isActive = (routeName) => route().current(routeName);
+
+    const isDropdownActive = (routes) => {
+        return routes.some(routeName => isActive(routeName));
+    };
     // const permissionNames = haspermissions.map(permission => permission);
 
     // console.log('user_id:', user.type);
     // console.log('Permission Names:', permissions);
     return (
         <Layout>
+            <Head title="All Users" ></Head>
             <div className="row">
                 <h1 className="p-4 text-center h1">All Users</h1>
                 {/* Display Success Message */}
